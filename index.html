@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Starlight Dashboard</title>
+<title>Starlight System</title>
 
 <style>
   body {
@@ -10,16 +10,26 @@
     font-family: Arial;
     background: #0b0f1a;
     color: white;
+    cursor: none; /* custom cursor */
+  }
+
+  /* WHITE CIRCLE CURSOR */
+  .cursor {
+    width: 14px;
+    height: 14px;
+    border: 2px solid white;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
   }
 
   .container {
     padding: 30px;
-    padding-bottom: 80px;
   }
 
-  h1 {
-    margin-bottom: 20px;
-  }
+  h1 { margin-bottom: 10px; }
 
   .grid {
     display: grid;
@@ -46,18 +56,42 @@
     cursor: pointer;
   }
 
-  .big {
-    grid-column: span 2;
+  .big { grid-column: span 2; }
+
+  /* LOGIN */
+  #login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  /* VERSION FOOTER */
+  .loginBox {
+    text-align: center;
+    background: #151c2f;
+    padding: 30px;
+    border-radius: 12px;
+  }
+
+  /* SETTINGS PANEL */
+  #settingsPanel {
+    position: fixed;
+    right: 20px;
+    top: 80px;
+    width: 220px;
+    background: #151c2f;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+  }
+
+  /* VERSION BAR */
   .version {
     position: fixed;
     bottom: 0;
-    left: 0;
     width: 100%;
     background: #0a0d16;
-    padding: 10px;
+    padding: 8px;
     font-size: 12px;
     color: #aaa;
     display: flex;
@@ -68,91 +102,164 @@
 
 <body>
 
+<div class="cursor" id="cursor"></div>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="loginBox">
+    <h2>Starlight Login</h2>
+
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p id="error" style="color:red;"></p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="app" style="display:none">
+
 <div class="container">
 
-  <h1>📊 Starlight Management Dashboard</h1>
+  <h1>📊 Starlight Dashboard</h1>
+
+  <button onclick="toggleSettings()">⚙️ Settings</button>
 
   <div class="grid">
 
     <!-- COUNTDOWN -->
     <div class="card big">
-      <h2>⏳ Countdown Timer</h2>
-
+      <h2>⏳ Countdown</h2>
       <input id="dateInput" type="datetime-local">
-      <button onclick="startCountdown()">Start Countdown</button>
-
-      <h3 id="countdown">No timer set</h3>
+      <button onclick="startCountdown()">Start</button>
+      <h3 id="countdown">No timer</h3>
     </div>
 
     <!-- CLOCK -->
     <div class="card">
-      <h2>🕒 Current Time</h2>
+      <h2>🕒 Time</h2>
       <h3 id="time"></h3>
     </div>
 
     <!-- STATUS -->
     <div class="card">
-      <h2>📡 System Status</h2>
+      <h2>📡 System</h2>
       <p>Server: Stable</p>
-      <p>Users: Online</p>
       <p>Security: Active</p>
     </div>
 
     <!-- SPOTIFY -->
     <div class="card big">
-      <h2>🎵 Spotify Player</h2>
-
+      <h2>🎵 Spotify</h2>
       <iframe style="border-radius:12px"
         src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-        width="100%" height="152"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-      </iframe>
+        width="100%" height="152"></iframe>
+    </div>
 
+    <!-- GOOGLE DRIVE -->
+    <div class="card big">
+      <h2>📁 Drive Files</h2>
+
+      <iframe
+        src="https://drive.google.com/embeddedfolderview?id=1lPVoGQoMKUANKemo4t9W1xjTV8U0jbfL#grid"
+        style="width:100%; height:300px; border:0;">
+      </iframe>
     </div>
 
   </div>
+</div>
 
 </div>
 
-<!-- VERSION BAR -->
+<!-- SETTINGS PANEL -->
+<div id="settingsPanel">
+  <h3>Settings</h3>
+
+  <button onclick="toggleCursor()">Toggle Cursor</button>
+  <button onclick="updateVersion()">Update Version</button>
+</div>
+
+<!-- VERSION -->
 <div class="version">
-  <div>Starlight Management System</div>
-  <div>v1.0.0 • build 001 • stable</div>
+  <div>Starlight System</div>
+  <div id="ver">v1.0.0 • stable</div>
 </div>
 
 <script>
-  // LIVE CLOCK
-  setInterval(() => {
-    document.getElementById("time").innerText =
-      new Date().toLocaleTimeString();
-  }, 1000);
+const users = {
+  stempchase: "Hmaw4357",
+  vowlesjade: "hunger-game",
+  wrightbec: "swim-time"
+};
 
-  // COUNTDOWN
-  function startCountdown() {
-    const input = document.getElementById("dateInput").value;
-    const countdownEl = document.getElementById("countdown");
+function login() {
+  const u = document.getElementById("user").value.trim();
+  const p = document.getElementById("pass").value.trim();
+  const error = document.getElementById("error");
 
-    const target = new Date(input).getTime();
-
-    setInterval(() => {
-      const now = new Date().getTime();
-      const diff = target - now;
-
-      if (diff <= 0) {
-        countdownEl.innerText = "Time reached!";
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
-
-      countdownEl.innerText =
-        `${days}d ${hours}h ${mins}m ${secs}s`;
-    }, 1000);
+  if (users[u] && users[u] === p) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    error.innerText = "Failed to load, contact the owner.";
   }
+}
+
+/* CLOCK */
+setInterval(() => {
+  document.getElementById("time").innerText =
+    new Date().toLocaleTimeString();
+}, 1000);
+
+/* COUNTDOWN */
+function startCountdown() {
+  const target = new Date(document.getElementById("dateInput").value).getTime();
+
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diff = target - now;
+
+    if (diff <= 0) return;
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000)/3600000);
+    const m = Math.floor((diff % 3600000)/60000);
+    const s = Math.floor((diff % 60000)/1000);
+
+    document.getElementById("countdown").innerText =
+      `${d}d ${h}h ${m}m ${s}s`;
+  }, 1000);
+}
+
+/* SETTINGS */
+function toggleSettings() {
+  const s = document.getElementById("settingsPanel");
+  s.style.display = s.style.display === "block" ? "none" : "block";
+}
+
+let cursorEnabled = true;
+function toggleCursor() {
+  cursorEnabled = !cursorEnabled;
+  document.getElementById("cursor").style.display =
+    cursorEnabled ? "block" : "none";
+}
+
+/* VERSION UPDATE SIM */
+let version = 1.0;
+function updateVersion() {
+  version += 0.1;
+  document.getElementById("ver").innerText =
+    `v${version.toFixed(1)}.0 • updated`;
+}
+
+/* CURSOR FOLLOW */
+document.addEventListener("mousemove", (e) => {
+  const c = document.getElementById("cursor");
+  c.style.left = e.clientX + "px";
+  c.style.top = e.clientY + "px";
+});
 </script>
 
 </body>
