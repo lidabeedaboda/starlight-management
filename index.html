@@ -1,89 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Starlight Management</title>
-  <style>
-    body {
-      margin: 0;
-      background: #0b0f1a;
-      color: white;
-      font-family: Arial;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<title>Starlight Management</title>
 
-    .box {
-      text-align: center;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b0f1a;
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    input {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      width: 220px;
-      border-radius: 8px;
-      border: none;
-    }
+  .card {
+    text-align: center;
+  }
 
-    button {
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: none;
-      background: #4c6fff;
-      color: white;
-      cursor: pointer;
-    }
+  input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 220px;
+    border-radius: 8px;
+    border: none;
+  }
 
-    .dashboard {
-      display: none;
-      text-align: center;
-    }
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background: #4c6fff;
+    color: white;
+    cursor: pointer;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 20px;
-    }
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
 
-    .card {
-      background: #151c2f;
-      padding: 15px;
-      border-radius: 10px;
-    }
-  </style>
+  .dashboard {
+    display: none;
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .box {
+    background: #151c2f;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .logout {
+    margin-top: 20px;
+    background: red;
+  }
+</style>
 </head>
+
 <body>
 
-<div class="box" id="loginBox">
+<!-- LOGIN -->
+<div class="card" id="loginPage">
   <h1>Welcome to Starlight Management</h1>
 
-  <input id="user" placeholder="Username" />
-  <input id="pass" type="password" placeholder="Password" />
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
 
-  <p id="error" style="color:red;"></p>
+  <div class="error" id="error"></div>
 </div>
 
+<!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
+
   <h1>📊 Starlight Dashboard</h1>
 
   <div class="grid">
-    <div class="card">🛫 Flights: OK</div>
-    <div class="card">👥 Users: 3</div>
-    <div class="card">📡 Server: Stable</div>
-    <div class="card">🔒 Security: Active</div>
+    <div class="box">🛫 Flight Systems: Online</div>
+    <div class="box">👥 Active Users: 3</div>
+    <div class="box">📡 Server Status: Stable</div>
+    <div class="box">🔒 Security: Enabled</div>
+    <div class="box">📁 Logs: No issues</div>
+    <div class="box">⚙️ Admin Panel: Active</div>
   </div>
 
-  <br />
-  <button onclick="logout()" style="background:red;">Logout</button>
+  <button class="logout" onclick="logout()">Logout</button>
 </div>
 
 <script>
+  // REAL USER DATABASE (client-side)
   const users = {
     stempchase: "Hmaw4357",
     vowlesjade: "hunger-game",
@@ -93,19 +112,23 @@
   function login() {
     const u = document.getElementById("user").value;
     const p = document.getElementById("pass").value;
+    const error = document.getElementById("error");
 
     if (users[u] && users[u] === p) {
-      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("loginPage").style.display = "none";
       document.getElementById("dashboard").style.display = "block";
+      error.innerText = "";
     } else {
-      document.getElementById("error").innerText =
-        "Failed to load, contact the owner.";
+      error.innerText = "Failed to load, contact the owner.";
     }
   }
 
   function logout() {
-    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("loginPage").style.display = "block";
     document.getElementById("dashboard").style.display = "none";
+
+    document.getElementById("user").value = "";
+    document.getElementById("pass").value = "";
   }
 </script>
 
