@@ -1,6 +1,3 @@
-Created by chase
-
-html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +54,7 @@ body {
   pointer-events: none;
 }
 
-/* 🧊 HIGH-END GLASSMORPHISM */
+/* 🧊 GLASSMORPHISM CARDS */
 .glass-panel {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -73,7 +70,7 @@ body {
   box-shadow: var(--card-shadow), 0 0 30px var(--glow-color);
 }
 
-/* 📊 RESPONSIVE GRID LAYOUT */
+/* 📊 GRID POSITIONING */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -133,7 +130,7 @@ h3 {
   margin: auto 0;
 }
 
-/* 🕹️ STYLISH INPUTS & BUTTONS */
+/* 🕹️ CONTROLS */
 button {
   padding: 12px 24px;
   border-radius: 16px;
@@ -156,7 +153,7 @@ button:active {
   transform: translateY(0);
 }
 
-input {
+input, select {
   padding: 14px;
   border-radius: 16px;
   border: 1px solid var(--glass-border);
@@ -167,16 +164,16 @@ input {
   outline: none;
   transition: all 0.2s ease;
 }
-.light input {
+.light input, .light select {
   background: rgba(255, 255, 255, 0.5);
 }
 
-input:focus {
+input:focus, select:focus {
   border-color: #a855f7;
   box-shadow: 0 0 0 3px var(--glow-color);
 }
 
-/* 🗓️ ITINERARY STREAM */
+/* 🗓️ CALENDAR ITINERARY */
 .event-timeline {
   display: flex;
   flex-direction: column;
@@ -219,7 +216,13 @@ input:focus {
   font-size: 15px;
 }
 
-/* 🔗 GRID NODES */
+.timeline-meta {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 🔗 LINKS GRID */
 .link-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -244,7 +247,7 @@ input:focus {
   border-color: transparent;
 }
 
-/* 🎵 SPOTIFY WRAPPER */
+/* 🎵 SPOTIFY EMBED */
 .spotify-container {
   border-radius: 18px;
   overflow: hidden;
@@ -252,23 +255,101 @@ input:focus {
   height: 80px;
 }
 
-/* 🚀 WEATHER WIDGET */
+/* 🌤️ WEATHER WIDGET */
 .weather-info {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin: auto 0;
+  margin-bottom: 12px;
 }
 .weather-temp {
-  font-size: 36px;
+  font-size: 38px;
 }
 .weather-desc {
   font-family: 'Outfit', sans-serif;
   font-size: 14px;
   color: var(--text-secondary);
 }
+.weather-details {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
 
-/* 🎯 INTERACTIVE HOVER CURSOR */
+/* 📋 QUICK TASKS WIDGET */
+.todo-input-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.todo-input-container input {
+  flex: 1;
+  padding: 10px;
+}
+.todo-input-container button {
+  padding: 10px 16px;
+}
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 120px;
+  overflow-y: auto;
+}
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+}
+.todo-item span {
+  cursor: pointer;
+}
+.todo-item.completed span {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+.todo-delete {
+  background: none;
+  border: none;
+  color: #ff4a74;
+  cursor: pointer;
+  box-shadow: none;
+  padding: 0;
+}
+.todo-delete:hover {
+  background: none;
+  transform: none;
+  box-shadow: none;
+  color: #ff1a4a;
+}
+
+/* ⏱️ STOPWATCH */
+.stopwatch-display {
+  font-size: 32px;
+  text-align: center;
+  margin: 10px 0;
+}
+.stopwatch-controls {
+  display: flex;
+  gap: 8px;
+}
+.stopwatch-controls button {
+  flex: 1;
+  padding: 8px;
+}
+
+/* 🎯 INTERACTIVE CURSOR */
 .cursor-ring {
   width: 24px;
   height: 24px;
@@ -293,7 +374,7 @@ input:focus {
   body { cursor: auto; }
 }
 
-/* 🔒 LOCKDOWN MATRIX */
+/* 🔒 CURFEW LOCK */
 #curfew {
   position: fixed;
   inset: 0;
@@ -309,7 +390,7 @@ input:focus {
 #curfew h1 { font-size: 80px; margin: 0; animation: float 3s ease-in-out infinite; }
 #curfew p { font-size: 20px; color: #b4b6f4; max-width: 440px; line-height: 1.6; }
 
-/* 🔐 SYSTEM ENTRY PORT */
+/* 🔐 LOGIN ENTRY */
 #login {
   min-height: 100vh;
   display: flex;
@@ -346,9 +427,9 @@ input:focus {
 <div class="cursor-ring" id="cursor"></div>
 
 <div id="curfew">
-  <h1>🌌</h1>
-  <h2 style="color: #fff; font-size: 26px;">Curfew Lockdown Active</h2>
-  <p>Access terminates during night cycles. Starlight Management system opens again at 8:24 AM.</p>
+  <h1>🔒</h1>
+  <h2 style="color: #fff; font-size: 26px;">Curfew Locked</h2>
+  <p>System operations locked down for the night. Access restores automatically at 8:24 AM.</p>
 </div>
 
 <div id="login">
@@ -366,58 +447,81 @@ input:focus {
     
     <div id="topbar" class="glass-panel">
       <h1 id="greeting">Starlight Management</h1>
-      <button onclick="toggleTheme()" style="padding: 8px 18px; font-size: 13px;">Interface Mode</button>
+      <button onclick="toggleTheme()" style="padding: 8px 18px; font-size: 13px;">Theme Mode</button>
     </div>
 
     <div class="card glass-panel wide">
-      <h2>🗓️ Central Itinerary</h2>
+      <h2>🗓️ Weekly Calendar</h2>
       <div class="event-timeline" id="events"></div>
     </div>
 
     <div class="card glass-panel">
-      <h2>🕒 Station Time</h2>
+      <h2>🕒 System Time</h2>
       <h3 id="time">00:00:00</h3>
+      <div id="dateDisplay" style="font-family:'Outfit', sans-serif; font-size:14px; color:var(--text-secondary); margin-top:10px;"></div>
     </div>
 
     <div class="card glass-panel">
-      <h2>✨ Weather Node</h2>
+      <h2>🌤️ Weather Node</h2>
       <div class="weather-info">
-        <div class="weather-temp">18°C</div>
-        <div class="weather-desc">Clear Space<br>Bangor, AU</div>
+        <div class="weather-temp" id="weatherTemp">18°C</div>
+        <div class="weather-desc">Clear Skies<br><span style="font-weight:600;">Bangor, AU</span></div>
+      </div>
+      <div class="weather-details">
+        <span>💧 Humidity: 62%</span>
+        <span>💨 Wind: 11 km/h</span>
       </div>
     </div>
 
     <div class="card glass-panel wide">
-      <h2>🎵 Ambient Audio Stream</h2>
+      <h2>🎵 Ambient Player</h2>
       <div class="spotify-container">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8NTLImsw8LB?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1GXAM96gZ3v06N?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </div>
 
     <div class="card glass-panel">
-      <h2>📁 Cloud Storage</h2>
-      <p style="color: var(--text-secondary); font-family: 'Outfit', sans-serif; font-size: 14px; margin-top: 0; line-height: 1.4;">Access unified repository nodes and data pipelines.</p>
+      <h2>📋 Quick Tasks</h2>
+      <div class="todo-input-container">
+        <input id="todoInput" placeholder="Add custom task..." autocomplete="off">
+        <button onclick="addTodo()">+</button>
+      </div>
+      <ul class="todo-list" id="todoList"></ul>
+    </div>
+
+    <div class="card glass-panel">
+      <h2>⏱️ Precision Stopwatch</h2>
+      <div class="stopwatch-display" id="stopwatchDisplay">00:00.0</div>
+      <div class="stopwatch-controls">
+        <button onclick="toggleStopwatch()" id="stopwatchBtn">Start</button>
+        <button onclick="resetStopwatch()" style="background:rgba(255,255,255,0.08); color:var(--text-primary); box-shadow:none;">Reset</button>
+      </div>
+    </div>
+
+    <div class="card glass-panel wide">
+      <h2>⏳ Milestone Countdown</h2>
+      <input id="dateInput" type="datetime-local" style="width: 100%;">
+      <div class="timer-controls">
+        <button onclick="startTimer()">Start</button>
+        <button onclick="stopTimer()" style="background: rgba(255,255,255,0.08); color: var(--text-primary); box-shadow: none;">Stop</button>
+      </div>
+      <h3 id="countdown" style="font-size: 20px; font-weight: 500; text-align: center;">No countdown running</h3>
+    </div>
+
+    <div class="card glass-panel">
+      <h2>📁 Cloud Repositories</h2>
+      <p style="color: var(--text-secondary); font-family: 'Outfit', sans-serif; font-size: 14px; margin-top: 0; line-height: 1.4;">Access unified documents, file nodes, and share networks.</p>
       <button onclick="window.open('https://drive.google.com','_blank')" style="margin-top: auto; width: 100%;">
-        Launch Storage Drive
+        Open Google Drive
       </button>
     </div>
 
-    <div class="card glass-panel wide">
-      <h2>⏳ Chrono Countdown</h2>
-      <input id="dateInput" type="datetime-local" style="width: 100%;">
-      <div class="timer-controls">
-        <button onclick="startTimer()">Initiate</button>
-        <button onclick="stopTimer()" style="background: rgba(255,255,255,0.08); color: var(--text-primary); box-shadow: none;">Abort</button>
-      </div>
-      <h3 id="countdown" style="font-size: 20px; font-weight: 500; text-align: center;">No countdown loaded</h3>
-    </div>
-
-    <div class="card glass-panel">
-      <h2>🔗 Node Links</h2>
-      <div class="link-grid">
+    <div class="card glass-panel full">
+      <h2>🔗 Node Navigation Links</h2>
+      <div class="link-grid" style="grid-template-columns: repeat(3, 1fr);">
         <a class="link-card" href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
-        <a class="link-card" href="https://spotify.com" target="_blank">Web Spotify Player</a>
-        <a class="link-card" href="https://mail.google.com" target="_blank">Google Mail Node</a>
+        <a class="link-card" href="https://open.spotify.com" target="_blank">Web Spotify Player</a>
+        <a class="link-card" href="https://mail.google.com" target="_blank">Google Mail Terminal</a>
       </div>
     </div>
 
@@ -433,7 +537,7 @@ const users = {
 
 let currentTimer = null;
 
-/* LOCKDOWN CONTROLLER MATRIX: 9:53PM - 8:24AM */
+/* CURFEW RULES ENGINE: 9:53PM - 8:24AM */
 function isCurfew(){
   const h = new Date().getHours();
   const m = new Date().getMinutes();
@@ -445,7 +549,7 @@ function isCurfew(){
   return (minutes >= start || minutes < end);
 }
 
-/* SYSTEM AUTHENTICATION LOGIC */
+/* APPLICATION ENTRY ACCESS PORT */
 function login(){
   const u = document.getElementById("user").value.trim();
   const p = document.getElementById("pass").value.trim();
@@ -463,13 +567,14 @@ function login(){
     setGreeting();
     loadEvents();
     startClock();
+    loadTodos();
     attachCursorListeners();
   } else {
-    document.getElementById("error").innerText = "Access denied. Invalid credentials.";
+    document.getElementById("error").innerText = "Clearance rejected. Invalid inputs.";
   }
 }
 
-/* TERMINAL USER GREETING DESIGN */
+/* PERSONALIZED HEADER COMPILER */
 function setGreeting(){
   const h = new Date().getHours();
   let g = "Good Evening";
@@ -482,23 +587,27 @@ function setGreeting(){
   document.getElementById("greeting").innerText = `${g}, ${beautifulUser}`;
 }
 
-/* TIME INTERVAL SYNC ENGINE */
+/* REALTIME SYSTEM CLOCK AND CALENDAR MATRICES */
 function startClock(){
   const clockEl = document.getElementById("time");
+  const dateEl = document.getElementById("dateDisplay");
+  
   setInterval(() => {
-    clockEl.innerText = new Date().toLocaleTimeString();
+    const now = new Date();
+    clockEl.innerText = now.toLocaleTimeString();
+    dateEl.innerText = now.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   }, 1000);
 }
 
-/* CHRONOLOGICAL CALENDAR MULTI-TRACKER */
+/* COMPREHENSIVE WEEKLY CALENDAR MATRIX */
 const schedule = [
-  { day: "Monday", event: "Sport Uniform" },
-  { day: "Tuesday", event: "Sport Uniform" },
-  { day: "Wednesday", event: "Assembly Session" },
-  { day: "Thursday", event: "No Events Scheduled" },
-  { day: "Friday", event: "Twilight (12th June)" },
-  { day: "Saturday", event: "No Events Scheduled" },
-  { day: "Sunday", event: "No Events Scheduled" }
+  { day: "Monday", event: "Sport Uniform Required", note: "Bring gym gear" },
+  { day: "Tuesday", event: "Sport Uniform Required", note: "Outdoor tracks open" },
+  { day: "Wednesday", event: "School Assembly Session", note: "Main hall meeting" },
+  { day: "Thursday", event: "No Events Scheduled", note: "Self-guided study window" },
+  { day: "Friday", event: "Twilight Event (12th June)", note: "Check assignments beforehand" },
+  { day: "Saturday", event: "No Events Scheduled", note: "Weekend cycle standby" },
+  { day: "Sunday", event: "No Events Scheduled", note: "Weekly prep cycle" }
 ];
 
 function loadEvents(){
@@ -515,36 +624,43 @@ function loadEvents(){
     const isToday = item.day === currentDayStr;
     return `
       <div class="timeline-item ${isToday ? 'active' : ''}">
-        <span class="timeline-day">${item.day} ${isToday ? '• TODAY' : '• COMING UP'}</span>
+        <span class="timeline-day">${item.day} ${isToday ? '• CURRENT TODAY' : '• COMING UP NEXT'}</span>
         <span class="timeline-desc">${item.event}</span>
+        <span class="timeline-meta">${item.note}</span>
       </div>
     `;
   }).join("");
 }
 
-/* TIMER SYSTEM DECK ENGINE */
+/* FIXED AND CORRECTED INTERVAL COUNTDOWN ENGINE */
 function startTimer(){
   const targetVal = document.getElementById("dateInput").value;
-  if(!targetVal) return;
+  if(!targetVal) {
+    document.getElementById("countdown").innerText = "Please select a valid date/time";
+    return;
+  }
   
-  const t = new Date(targetVal).getTime();
-  stopTimer();
+  const targetTime = new Date(targetVal).getTime();
+  stopTimer(); // Ensure any running instances clear cleanly
 
-  currentTimer = setInterval(() => {
-    const d = t - Date.now();
-    if(d <= 0){
-      document.getElementById("countdown").innerText = "Timer Complete ✓";
+  function updateTimer() {
+    const diff = targetTime - Date.now();
+    if(diff <= 0){
+      document.getElementById("countdown").innerText = "Milestone Reached! ✓";
       clearInterval(currentTimer);
       return;
     }
 
-    const days = Math.floor(d / 86400000);
-    const hours = Math.floor((d % 86400000) / 3600000);
-    const mins = Math.floor((d % 3600000) / 60000);
-    const secs = Math.floor((d % 60000) / 1000);
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
 
     document.getElementById("countdown").innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
-  }, 1000);
+  }
+
+  updateTimer(); // Initial immediate fire to replace static text instantly
+  currentTimer = setInterval(updateTimer, 1000);
 }
 
 function stopTimer(){
@@ -552,15 +668,85 @@ function stopTimer(){
     clearInterval(currentTimer);
     currentTimer = null;
   }
-  document.getElementById("countdown").innerText = "Monitor Halted";
+  document.getElementById("countdown").innerText = "Countdown Stopped";
 }
 
-/* CORE ENVIRONMENT LIGHT / DARK DISPLAY CONTROLLER */
+/* QUICK TASKS ACTIONS ENGINE */
+let todos = [];
+function loadTodos() {
+  const saved = localStorage.getItem("starlight_tasks");
+  if(saved) todos = JSON.parse(saved);
+  renderTodos();
+}
+function addTodo() {
+  const input = document.getElementById("todoInput");
+  if(!input.value.trim()) return;
+  todos.push({ text: input.value.trim(), completed: false });
+  input.value = "";
+  saveAndRenderTodos();
+}
+function toggleTodo(index) {
+  todos[index].completed = !todos[index].completed;
+  saveAndRenderTodos();
+}
+function deleteTodo(index) {
+  todos.splice(index, 1);
+  saveAndRenderTodos();
+}
+function saveAndRenderTodos() {
+  localStorage.setItem("starlight_tasks", JSON.stringify(todos));
+  renderTodos();
+}
+function renderTodos() {
+  const list = document.getElementById("todoList");
+  list.innerHTML = todos.map((todo, idx) => `
+    <li class="todo-item ${todo.completed ? 'completed' : ''}">
+      <span onclick="toggleTodo(${idx})">${todo.text}</span>
+      <button class="todo-delete" onclick="deleteTodo(${idx})">✖</button>
+    </li>
+  `).join("");
+}
+
+/* STOPWATCH SYSTEMS CONTROLLER */
+let stopwatchInterval = null;
+let stopwatchTime = 0;
+function toggleStopwatch() {
+  const btn = document.getElementById("stopwatchBtn");
+  if(stopwatchInterval) {
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
+    btn.innerText = "Start";
+  } else {
+    btn.innerText = "Pause";
+    const startTime = Date.now() - stopwatchTime;
+    stopwatchInterval = setInterval(() => {
+      stopwatchTime = Date.now() - startTime;
+      formatStopwatchDisplay();
+    }, 100);
+  }
+}
+function resetStopwatch() {
+  clearInterval(stopwatchInterval);
+  stopwatchInterval = null;
+  stopwatchTime = 0;
+  document.getElementById("stopwatchBtn").innerText = "Start";
+  document.getElementById("stopwatchDisplay").innerText = "00:00.0";
+}
+function formatStopwatchDisplay() {
+  const totalSeconds = stopwatchTime / 1000;
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = Math.floor(totalSeconds % 60);
+  const tenths = Math.floor((stopwatchTime % 1000) / 100);
+  document.getElementById("stopwatchDisplay").innerText = 
+    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${tenths}`;
+}
+
+/* VISUAL MODE THEME SWITCHER */
 function toggleTheme(){
   document.body.classList.toggle("light");
 }
 
-/* MAGNETIC FLUID CURSOR ATTACHMENT TRACKING */
+/* INTERACTIVE CURSOR MOUSE ENGINE */
 const cursor = document.getElementById("cursor");
 document.addEventListener("mousemove", (e) => {
   cursor.style.left = e.clientX + "px";
@@ -568,14 +754,14 @@ document.addEventListener("mousemove", (e) => {
 });
 
 function attachCursorListeners() {
-  document.querySelectorAll("button, input, a, iframe").forEach(elem => {
+  document.querySelectorAll("button, input, select, a, iframe, .todo-item span").forEach(elem => {
     elem.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
     elem.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
   });
 }
 attachCursorListeners();
 
-/* ENGINE ANIMATED BACKGROUND PARTICLES CONSTRUCTOR */
+/* ENGINE ANIMATED BACKGROUND STAR PARTICLES */
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 let w, h, stars = [];
@@ -616,5 +802,3 @@ draw();
 
 </body>
 </html>
-
-```
