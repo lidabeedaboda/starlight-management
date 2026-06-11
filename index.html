@@ -6,7 +6,844 @@
 <title>Starlight Management</title>
 <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png?v=4">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+a<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starlight Management</title>
 
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⭐</text></svg>">
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Default Midnight Dark Theme Colors */
+  --bg-gradient: radial-gradient(circle at top, #0b0f19, #04060b);
+  --glass-bg: rgba(15, 22, 42, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glow-color: rgba(99, 102, 241, 0.25);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent: linear-gradient(135deg, #6366f1, #a855f7);
+  --accent-hover: linear-gradient(135deg, #4f46e5, #9333ea);
+  --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  --star-color: #ffffff;
+}
+
+/* 🍦 LIGHT MODE */
+body.light {
+  --bg-gradient: radial-gradient(circle at top, #f8fafc, #e2e8f0);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glow-color: rgba(99, 102, 241, 0.15);
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --card-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+  --star-color: #6366f1;
+}
+
+/* 💙 CYBER BLUE THEME */
+body.blue {
+  --bg-gradient: radial-gradient(circle at top, #00172d, #000711);
+  --glass-bg: rgba(0, 26, 51, 0.65);
+  --glass-border: rgba(0, 212, 255, 0.15);
+  --glow-color: rgba(0, 180, 216, 0.3);
+  --text-primary: #e0f2fe;
+  --text-secondary: #38bdf8;
+  --accent: linear-gradient(135deg, #00b4d8, #0077b6);
+  --accent-hover: linear-gradient(135deg, #0096c7, #03045e);
+  --card-shadow: 0 20px 40px rgba(0, 8, 20, 0.6);
+  --star-color: #00b4d8;
+}
+
+/* 🌸 NEON PINK THEME */
+body.pink {
+  --bg-gradient: radial-gradient(circle at top, #1a0513, #080005);
+  --glass-bg: rgba(41, 10, 31, 0.6);
+  --glass-border: rgba(244, 63, 94, 0.2);
+  --glow-color: rgba(244, 63, 94, 0.35);
+  --text-primary: #fff1f2;
+  --text-secondary: #fda4af;
+  --accent: linear-gradient(135deg, #f43f5e, #ec4899);
+  --accent-hover: linear-gradient(135deg, #e11d48, #db2777);
+  --card-shadow: 0 20px 40px rgba(20, 0, 10, 0.7);
+  --star-color: #f43f5e;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Fredoka One', cursive;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  min-height: 100vh;
+  cursor: none;
+  overflow-x: hidden;
+  transition: background 0.5s ease, color 0.3s ease;
+}
+
+#stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 🧊 SATIN GLASSMORPHISM */
+.glass-panel {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 28px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--card-shadow);
+  background: var(--glass-bg);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--card-shadow), 0 0 35px var(--glow-color);
+}
+
+/* 📊 RESPONSIVE GRID CONFIG */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 22px;
+}
+
+#topbar {
+  grid-column: span 12;
+  padding: 22px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#topbar h1 {
+  font-size: 28px;
+  margin: 0;
+  background: var(--accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.card {
+  grid-column: span 4;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card.wide { grid-column: span 6; }
+.card.full { grid-column: span 12; }
+
+@media (max-width: 1024px) {
+  .card.wide { grid-column: span 12; }
+}
+@media (max-width: 768px) {
+  .card { grid-column: span 12; }
+}
+
+h2 {
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin: 0 0 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h3 {
+  font-size: 32px;
+  margin: auto 0;
+}
+
+/* 🕹️ STYLISH GLOBAL ELEMENTS */
+button {
+  padding: 12px 24px;
+  border-radius: 16px;
+  border: none;
+  font-family: 'Fredoka One', cursive;
+  font-size: 13px;
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 15px var(--glow-color);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--glow-color);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+input, select {
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-primary);
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+body.light input, body.light select {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+input:focus, select:focus {
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: 0 0 0 4px var(--glow-color);
+}
+
+/* 🗓️ CALENDAR ENGINE PLOT */
+.event-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 250px;
+  padding-right: 6px;
+}
+
+.event-timeline::-webkit-scrollbar { width: 6px; }
+.event-timeline::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 10px;
+}
+
+.timeline-item {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timeline-item.active {
+  border-left: 4px solid var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.timeline-day {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.timeline-desc {
+  font-size: 15px;
+}
+
+.timeline-meta {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 🔗 GRID NODES links */
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+  margin-top: auto;
+}
+
+.link-card {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+.link-card:hover {
+  background: var(--accent);
+  color: white !important;
+  border-color: transparent;
+}
+
+/* 🎵 MEDIA PLAYER COMPONENT */
+.spotify-container {
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: auto;
+  height: 152px;
+  background: #000;
+}
+
+/* 🌤️ DETAILED WEATHER ELEMENT */
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+.weather-temp { font-size: 38px; }
+.weather-desc {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.weather-details {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 📋 TASKS COMPONENT */
+.todo-input-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.todo-input-container input { flex: 1; padding: 10px; }
+.todo-input-container button { padding: 10px 16px; }
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 120px;
+  overflow-y: auto;
+}
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+}
+.todo-item.completed span {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+.todo-delete {
+  background: none; border: none; color: #ff4a74; cursor: pointer; box-shadow: none; padding: 0;
+}
+.todo-delete:hover { color: #ff1a4a; background: none; transform: none; box-shadow: none; }
+
+/* ⏱️ STOPWATCH MECHANICS */
+.stopwatch-display { font-size: 32px; text-align: center; margin: 10px 0; }
+.stopwatch-controls { display: flex; gap: 8px; }
+.stopwatch-controls button { flex: 1; padding: 8px; }
+
+/* 🎨 CONTROLLER ENGINE HOVER CURSOR */
+.cursor-ring {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--text-primary);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 99999;
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+.cursor-hover {
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.12);
+}
+@media (pointer: coarse) {
+  .cursor-ring { display: none; }
+  body { cursor: auto; }
+}
+
+/* 🔒 LOCKDOWN ENVIRONMENT RULES */
+#curfew {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100000;
+  background: radial-gradient(circle at center, #111, #000);
+}
+#curfew h1 { font-size: 80px; margin: 0; animation: float 3s ease-in-out infinite; }
+#curfew p { font-size: 20px; max-width: 440px; line-height: 1.6; }
+
+/* 🔐 SYSTEM PROTECTION LOGIN ACCESS MAPS */
+#login {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.loginBox {
+  padding: 40px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+.loginBox input, .loginBox select { width: 100%; margin-bottom: 14px; }
+.loginBox button { width: 100%; margin-top: 10px; }
+#error { font-size: 13px; margin: 12px 0 0 0; min-height: 18px; }
+
+.timer-controls { display: flex; gap: 8px; margin: 12px 0; }
+.timer-controls button { flex: 1; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+</style>
+</head>
+
+<body class="dark">
+
+<canvas id="stars"></canvas>
+<div class="cursor-ring" id="cursor"></div>
+
+<div id="curfew">
+  <h1>🔒</h1>
+  <h2 style="color: #fff; font-size: 26px;">Curfew Active</h2>
+  <p>System environments are closed down during off-hours. Operations automatically unlock at 8:24 AM.</p>
+</div>
+
+<div id="login">
+  <div class="glass-panel loginBox">
+    <h2 style="justify-content: center; font-size: 22px;">⭐ Starlight Gateway</h2>
+    
+    <input id="user" placeholder="Username" spellcheck="false" autocomplete="off">
+    <input id="pass" type="password" placeholder="Password">
+    
+    <select id="loginSignet" style="margin-bottom: 14px;">
+      <option value="None">Select Signet Option</option>
+      <option value="👑 Monarch Crest">👑 Monarch Crest</option>
+      <option value="🛡️ Vanguard Vanguard">🛡️ Vanguard Shield</option>
+      <option value="🦅 Astral Falcon">🦅 Astral Falcon</option>
+      <option value="🔮 Mystic Rune">🔮 Mystic Rune</option>
+    </select>
+
+    <button onclick="login()">Access Station</button>
+    <p id="error" style="color:#ff4a74;"></p>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="container">
+    
+    <div id="topbar" class="glass-panel">
+      <h1 id="greeting">Starlight Management</h1>
+      
+      <select id="themeSelector" onchange="changeTheme()" style="padding: 8px 14px; font-size: 13px; border-radius: 12px; height: auto;">
+        <option value="dark">🌌 Dark Mode</option>
+        <option value="light">🍦 Light Mode</option>
+        <option value="blue">💙 Cyber Blue</option>
+        <option value="pink">🌸 Neon Pink</option>
+      </select>
+    </div>
+
+    <div class="card glass-panel wide">
+      <h2>🗓️ Central Itinerary</h2>
+      <div class="event-timeline" id="events"></div>
+    </div>
+
+    <div class="card glass-panel">
+      <h2>🕒 System Time</h2>
+      <h3 id="time">00:00:00</h3>
+      <div id="dateDisplay" style="font-family:'Outfit', sans-serif; font-size:14px; color:var(--text-secondary); margin-top:10px;"></div>
+      <div id="signetBadge" style="margin-top: 12px; font-size: 13px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; width: fit-content; display: none;"></div>
+    </div>
+
+    <div class="card glass-panel">
+      <h2>🌤️ Weather Node</h2>
+      <div class="weather-info">
+        <div class="weather-temp">18°C</div>
+        <div class="weather-desc">Clear Skies<br><span style="font-weight:600;">Bangor, AU</span></div>
+      </div>
+      <div class="weather-details">
+        <span>💧 Humidity: 62%</span>
+        <span>💨 Wind: 11 km/h</span>
+      </div>
+    </div>
+
+    <div class="card glass-panel wide">
+      <h2>🎵 Ambient Player Engine</h2>
+      <div class="spotify-container">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX843I64nCl9g?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="card glass-panel">
+      <h2>📋 Quick Tasks</h2>
+      <div class="todo-input-container">
+        <input id="todoInput" placeholder="Add custom task..." autocomplete="off">
+        <button onclick="addTodo()">+</button>
+      </div>
+      <ul class="todo-list" id="todoList"></ul>
+    </div>
+
+    <div class="card glass-panel">
+      <h2>⏱️ Precision Stopwatch</h2>
+      <div class="stopwatch-display" id="stopwatchDisplay">00:00.0</div>
+      <div class="stopwatch-controls">
+        <button onclick="toggleStopwatch()" id="stopwatchBtn">Start</button>
+        <button onclick="resetStopwatch()" style="background:rgba(255,255,255,0.08); color:var(--text-primary); box-shadow:none;">Reset</button>
+      </div>
+    </div>
+
+    <div class="card glass-panel wide">
+      <h2>⏳ Milestone Countdown</h2>
+      <input id="dateInput" type="datetime-local" style="width: 100%;">
+      <div class="timer-controls">
+        <button onclick="startTimer()">Start</button>
+        <button onclick="stopTimer()" style="background: rgba(255,255,255,0.08); color: var(--text-primary); box-shadow: none;">Stop</button>
+      </div>
+      <h3 id="countdown" style="font-size: 20px; font-weight: 500; text-align: center;">No countdown running</h3>
+    </div>
+
+    <div class="card glass-panel">
+      <h2>📁 Cloud Repositories</h2>
+      <p style="color: var(--text-secondary); font-family: 'Outfit', sans-serif; font-size: 14px; margin-top: 0; line-height: 1.4;">Access database arrays, shared files networks, and document tracking channels.</p>
+      <button onclick="window.open('https://drive.google.com','_blank')" style="margin-top: auto; width: 100%;">
+        Open Google Drive
+      </button>
+    </div>
+
+    <div class="card glass-panel full">
+      <h2>🔗 Node Navigation Links</h2>
+      <div class="link-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <a class="link-card" href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
+        <a class="link-card" href="https://open.spotify.com" target="_blank">Web Spotify Player</a>
+        <a class="link-card" href="https://mail.google.com" target="_blank">Google Mail Terminal</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Extended User Matrix Databases Map
+const users = {
+  stempchase: "Hmaw4357",
+  vowlesjade: "hunger-game",
+  wrightbec: "swim-time",
+  sohannah: "horse",
+  redflorence: "dance"
+};
+
+let currentTimer = null;
+
+/* LOCKDOWN SYSTEM CHRONO CHECKS: 9:53PM - 8:24AM */
+function isCurfew(){
+  const h = new Date().getHours();
+  const m = new Date().getMinutes();
+  const minutes = h * 60 + m;
+
+  const start = 21 * 60 + 53; 
+  const end = 8 * 60 + 24;    
+
+  return (minutes >= start || minutes < end);
+}
+
+/* AUTHENTICATION GATEWAY CONTROL PIPELINE */
+function login(){
+  const u = document.getElementById("user").value.trim().toLowerCase();
+  const p = document.getElementById("pass").value.trim();
+  const signet = document.getElementById("loginSignet").value;
+
+  if(users[u] && users[u] === p){
+    if(isCurfew()){
+      document.getElementById("login").style.display = "none";
+      document.getElementById("curfew").style.display = "flex";
+      return;
+    }
+
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+
+    setGreeting(u);
+    loadEvents();
+    startClock();
+    loadTodos();
+    setupSignetBadge(signet);
+    attachCursorListeners();
+  } else {
+    document.getElementById("error").innerText = "Clearance rejected. Invalid inputs.";
+  }
+}
+
+/* SET SIGNET BADGE COMPONENT */
+function setupSignetBadge(signet) {
+  const badge = document.getElementById("signetBadge");
+  if(signet !== "None") {
+    badge.innerText = "Active Signet: " + signet;
+    badge.style.display = "block";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+/* PERSONALIZED HEADER COMPILER */
+function setGreeting(username){
+  const h = new Date().getHours();
+  let g = "Good Evening";
+  if(h < 12) g = "Good Morning";
+  else if(h < 18) g = "Good Afternoon";
+
+  const beautifulUser = username.charAt(0).toUpperCase() + username.slice(1);
+  document.getElementById("greeting").innerText = `${g}, ${beautifulUser}`;
+}
+
+/* REALTIME ENGINE INTEGRATED DISPLAY CLOCKS */
+function startClock(){
+  const clockEl = document.getElementById("time");
+  const dateEl = document.getElementById("dateDisplay");
+  
+  setInterval(() => {
+    const now = new Date();
+    clockEl.innerText = now.toLocaleTimeString();
+    dateEl.innerText = now.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }, 1000);
+}
+
+/* PROGRESSIVE CALENDAR SCHEDULER MATRIX */
+const schedule = [
+  { day: "Monday", event: "Sport Uniform Required", note: "Bring gym gear" },
+  { day: "Tuesday", event: "Sport Uniform Required", note: "Outdoor tracks open" },
+  { day: "Wednesday", event: "School Assembly Session", note: "Main hall meeting" },
+  { day: "Thursday", event: "No Events Scheduled", note: "Self-guided study window" },
+  { day: "Friday", event: "Twilight Event (12th June)", note: "Check assignments beforehand" },
+  { day: "Saturday", event: "No Events Scheduled", note: "Weekend cycle standby" },
+  { day: "Sunday", event: "No Events Scheduled", note: "Weekly prep cycle" }
+];
+
+function loadEvents(){
+  const currentDayStr = new Date().toLocaleDateString("en-US", { weekday: "long" });
+  const box = document.getElementById("events");
+
+  const todayIdx = schedule.findIndex(item => item.day === currentDayStr);
+  const orderedSchedule = [
+    ...schedule.slice(todayIdx >= 0 ? todayIdx : 0),
+    ...schedule.slice(0, todayIdx >= 0 ? todayIdx : 0)
+  ];
+
+  box.innerHTML = orderedSchedule.map(item => {
+    const isToday = item.day === currentDayStr;
+    return `
+      <div class="timeline-item ${isToday ? 'active' : ''}">
+        <span class="timeline-day">${item.day} ${isToday ? '• CURRENT TODAY' : '• COMING UP NEXT'}</span>
+        <span class="timeline-desc">${item.event}</span>
+        <span class="timeline-meta">${item.note}</span>
+      </div>
+    `;
+  }).join("");
+}
+
+/* MULTI-THEME INTERFACE SYSTEM ROUTER */
+function changeTheme(){
+  const selector = document.getElementById("themeSelector");
+  const selectedTheme = selector.value;
+  
+  document.body.className = ""; // Wipe active configurations
+  if (selectedTheme !== "dark") {
+    document.body.classList.add(selectedTheme);
+  }
+}
+
+/* RELIABLE RUNNING COUNTDOWN MODULE TIMERS */
+function startTimer(){
+  const targetVal = document.getElementById("dateInput").value;
+  if(!targetVal) {
+    document.getElementById("countdown").innerText = "Select a valid target date/time";
+    return;
+  }
+  
+  const targetTime = new Date(targetVal).getTime();
+  stopTimer(); 
+
+  function updateTimer() {
+    const diff = targetTime - Date.now();
+    if(diff <= 0){
+      document.getElementById("countdown").innerText = "Milestone Reached! ✓";
+      clearInterval(currentTimer);
+      return;
+    }
+
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById("countdown").innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
+  }
+
+  updateTimer();
+  currentTimer = setInterval(updateTimer, 1000);
+}
+
+function stopTimer(){
+  if(currentTimer){
+    clearInterval(currentTimer);
+    currentTimer = null;
+  }
+  document.getElementById("countdown").innerText = "Countdown Stopped";
+}
+
+/* TO-DO TASK INTERACTIVE LOGIC MODULES */
+let todos = [];
+function loadTodos() {
+  const saved = localStorage.getItem("starlight_tasks_v2");
+  if(saved) todos = JSON.parse(saved);
+  renderTodos();
+}
+function addTodo() {
+  const input = document.getElementById("todoInput");
+  if(!input.value.trim()) return;
+  todos.push({ text: input.value.trim(), completed: false });
+  input.value = "";
+  saveAndRenderTodos();
+}
+function toggleTodo(index) {
+  todos[index].completed = !todos[index].completed;
+  saveAndRenderTodos();
+}
+function deleteTodo(index) {
+  todos.splice(index, 1);
+  saveAndRenderTodos();
+}
+function saveAndRenderTodos() {
+  localStorage.setItem("starlight_tasks_v2", JSON.stringify(todos));
+  renderTodos();
+}
+function renderTodos() {
+  const list = document.getElementById("todoList");
+  list.innerHTML = todos.map((todo, idx) => `
+    <li class="todo-item ${todo.completed ? 'completed' : ''}">
+      <span onclick="toggleTodo(${idx})" style="flex:1; cursor:pointer;">${todo.text}</span>
+      <button class="todo-delete" onclick="deleteTodo(${idx})">✖</button>
+    </li>
+  `).join("");
+}
+
+/* PRECISION INTERVAL SYSTEM STOPWATCH ENGINE */
+let stopwatchInterval = null;
+let stopwatchTime = 0;
+function toggleStopwatch() {
+  const btn = document.getElementById("stopwatchBtn");
+  if(stopwatchInterval) {
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
+    btn.innerText = "Start";
+  } else {
+    btn.innerText = "Pause";
+    const startTime = Date.now() - stopwatchTime;
+    stopwatchInterval = setInterval(() => {
+      stopwatchTime = Date.now() - startTime;
+      formatStopwatchDisplay();
+    }, 100);
+  }
+}
+function resetStopwatch() {
+  clearInterval(stopwatchInterval);
+  stopwatchInterval = null;
+  stopwatchTime = 0;
+  document.getElementById("stopwatchBtn").innerText = "Start";
+  document.getElementById("stopwatchDisplay").innerText = "00:00.0";
+}
+function formatStopwatchDisplay() {
+  const totalSeconds = stopwatchTime / 1000;
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = Math.floor(totalSeconds % 60);
+  const tenths = Math.floor((stopwatchTime % 1000) / 100);
+  document.getElementById("stopwatchDisplay").innerText = 
+    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${tenths}`;
+}
+
+/* AMBIENT CURSOR INTERACTION TRAILING ENGINE */
+const cursor = document.getElementById("cursor");
+document.addEventListener("mousemove", (e) => {
+  cursor.style.left = e.clientX + "px";
+  cursor.style.top = e.clientY + "px";
+});
+
+function attachCursorListeners() {
+  document.querySelectorAll("button, input, select, a, iframe, .todo-item span").forEach(elem => {
+    elem.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
+    elem.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
+  });
+}
+attachCursorListeners();
+
+/* ENGINE DRIVEN STARS BACKGROUND MATRIX CREATOR */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+let w, h, stars = [];
+
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+for(let i = 0; i < 150; i++){
+  stars.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.6 + 0.3,
+    alpha: Math.random(),
+    speed: Math.random() * 0.015 + 0.005
+  });
+}
+
+function draw(){
+  ctx.clearRect(0, 0, w, h);
+  for(let s of stars){
+    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--star-color').trim();
+    s.alpha += s.speed;
+    if(s.alpha > 1 || s.alpha < 0.1) s.speed = -s.speed;
+    
+    ctx.globalAlpha = Math.abs(s.alpha);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
 <style>
 :root {
   --bg-gradient: radial-gradient(circle at top, #0b0f19, #04060b);
