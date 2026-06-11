@@ -1,130 +1,113 @@
-"use client";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Starlight Management</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0b0f1a;
+      color: white;
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-import { useState } from "react";
+    .box {
+      text-align: center;
+    }
 
-export default function Page() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [error, setError] = useState("");
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 220px;
+      border-radius: 8px;
+      border: none;
+    }
 
+    button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #4c6fff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      display: none;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #151c2f;
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box" id="loginBox">
+  <h1>Welcome to Starlight Management</h1>
+
+  <input id="user" placeholder="Username" />
+  <input id="pass" type="password" placeholder="Password" />
+
+  <button onclick="login()">Login</button>
+
+  <p id="error" style="color:red;"></p>
+</div>
+
+<div class="dashboard" id="dashboard">
+  <h1>📊 Starlight Dashboard</h1>
+
+  <div class="grid">
+    <div class="card">🛫 Flights: OK</div>
+    <div class="card">👥 Users: 3</div>
+    <div class="card">📡 Server: Stable</div>
+    <div class="card">🔒 Security: Active</div>
+  </div>
+
+  <br />
+  <button onclick="logout()" style="background:red;">Logout</button>
+</div>
+
+<script>
   const users = {
     stempchase: "Hmaw4357",
     vowlesjade: "hunger-game",
-    wrightbec: "swim-time",
+    wrightbec: "swim-time"
   };
 
   function login() {
-    // @ts-ignore
-    if (users[username] && users[username] === password) {
-      setLoggedIn(true);
-      setError("");
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
+
+    if (users[u] && users[u] === p) {
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
     } else {
-      setError("Failed to load, contact the owner.");
+      document.getElementById("error").innerText =
+        "Failed to load, contact the owner.";
     }
   }
 
-  if (loggedIn) {
-    return (
-      <div style={styles.dashboard}>
-        <h1>📊 Starlight Dashboard</h1>
-
-        <div style={styles.grid}>
-          <div style={styles.card}>🛫 Flights Status: All systems operational</div>
-          <div style={styles.card}>👥 Users Online: 3</div>
-          <div style={styles.card}>📡 Server: Stable</div>
-          <div style={styles.card}>⚙️ Admin Tools: Enabled</div>
-          <div style={styles.card}>📁 Logs: No errors detected</div>
-          <div style={styles.card}>🔒 Security: Active monitoring</div>
-        </div>
-
-        <button style={styles.logout} onClick={() => setLoggedIn(false)}>
-          Logout
-        </button>
-      </div>
-    );
+  function logout() {
+    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
   }
+</script>
 
-  return (
-    <div style={styles.container}>
-      <h1>✨ Welcome to Starlight Management</h1>
-
-      <input
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        style={styles.input}
-      />
-
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={styles.input}
-      />
-
-      <button onClick={login} style={styles.button}>
-        Login
-      </button>
-
-      {error && <p style={styles.error}>{error}</p>}
-    </div>
-  );
-}
-
-const styles: any = {
-  container: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "#0b0f1a",
-    color: "white",
-    gap: "10px",
-  },
-  input: {
-    padding: "10px",
-    width: "220px",
-    borderRadius: "8px",
-    border: "none",
-  },
-  button: {
-    padding: "10px 20px",
-    borderRadius: "8px",
-    border: "none",
-    background: "#4c6fff",
-    color: "white",
-    cursor: "pointer",
-  },
-  error: {
-    color: "red",
-  },
-  dashboard: {
-    padding: "30px",
-    background: "#0b0f1a",
-    color: "white",
-    minHeight: "100vh",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gap: "15px",
-    marginTop: "20px",
-  },
-  card: {
-    background: "#151c2f",
-    padding: "15px",
-    borderRadius: "10px",
-  },
-  logout: {
-    marginTop: "20px",
-    padding: "10px 20px",
-    borderRadius: "8px",
-    border: "none",
-    background: "red",
-    color: "white",
-    cursor: "pointer",
-  },
-};
+</body>
+</html>
