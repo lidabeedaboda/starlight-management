@@ -18,11 +18,11 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌌 BACKGROUND */
-#stars, #shootingStars {
+/* 🌌 STAR BACKGROUND ONLY */
+#stars {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -1;
 }
 
 /* THEMES */
@@ -37,65 +37,61 @@ body.light {
 }
 
 /* 🧊 GLASS */
-.card, .loginBox, #header {
+.card, #topbar, .loginBox {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
   box-shadow: 0 10px 35px rgba(0,0,0,0.35);
-  border-radius: 18px;
 }
 
 body.dark .card,
-body.dark .loginBox,
-body.dark #header {
+body.dark #topbar,
+body.dark .loginBox {
   background: rgba(21, 28, 47, 0.55);
 }
 
 body.light .card,
-body.light .loginBox,
-body.light #header {
+body.light #topbar,
+body.light .loginBox {
   background: rgba(255,255,255,0.6);
 }
 
 /* LAYOUT */
 .container {
-  padding: 25px;
-  padding-bottom: 100px;
-}
-
-/* HEADER */
-#header {
-  padding: 15px;
-  margin-bottom: 15px;
-}
-
-/* GRID */
-.grid {
+  padding: 20px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-/* SPLIT */
-.split {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 12px;
+/* TOP BAR */
+#topbar {
+  grid-column: span 2;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* CARDS */
 .card {
   padding: 12px;
-  transition: 0.25s;
+  transition: 0.2s;
 }
 
 .card:hover {
   transform: translateY(-5px);
 }
 
-/* SMALL TEXT */
-h1 { font-size: 22px; margin: 0; }
-h2 { font-size: 16px; margin-bottom: 6px; }
+/* FULL WIDTH */
+.full {
+  grid-column: span 2;
+}
+
+/* TEXT */
+h1 { font-size: 20px; margin: 0; }
+h2 { font-size: 15px; margin-bottom: 6px; }
 h3 { font-size: 13px; margin: 0; }
 p { font-size: 12px; }
 
@@ -104,29 +100,39 @@ button {
   padding: 8px;
   border-radius: 10px;
   border: none;
-  margin-top: 8px;
-  font-family: inherit;
-  background: linear-gradient(135deg, #4c6fff, #6a8dff);
+  font-size: 12px;
+  background: linear-gradient(135deg,#4c6fff,#6a8dff);
   color: white;
   cursor: pointer;
+}
+
+/* QUICK LINKS */
+a {
+  display: block;
   font-size: 12px;
+  margin-top: 6px;
+  color: inherit;
+  text-decoration: none;
+  padding: 6px;
+  border-radius: 8px;
+  background: rgba(76,110,255,0.15);
 }
 
-/* LOGIN CENTERED CLEAN */
-#login {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* TODAY EVENTS */
+/* EVENTS */
 .event {
   padding: 8px;
   margin-top: 6px;
   border-radius: 10px;
   background: rgba(255,255,255,0.08);
   font-size: 12px;
+}
+
+/* LOGIN */
+#login {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* CURSOR */
@@ -142,33 +148,20 @@ button {
 }
 body.light .cursor { border-color:#111; }
 
-/* VERSION */
-.version {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  font-size: 11px;
-  padding: 6px 10px;
-  display: flex;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-}
 </style>
 </head>
 
 <body class="dark">
 
 <canvas id="stars"></canvas>
-<canvas id="shootingStars"></canvas>
-
 <div class="cursor" id="cursor"></div>
 
 <!-- LOGIN -->
 <div id="login">
   <div class="loginBox" style="padding:25px;text-align:center;">
     <h2>⭐ Starlight Login</h2>
-    <input id="user" placeholder="Username"><br>
-    <input id="pass" type="password" placeholder="Password"><br>
+    <input id="user" placeholder="Username"><br><br>
+    <input id="pass" type="password" placeholder="Password"><br><br>
     <button onclick="login()">Login</button>
     <p id="error" style="color:red;"></p>
   </div>
@@ -177,64 +170,55 @@ body.light .cursor { border-color:#111; }
 <!-- APP -->
 <div id="app" style="display:none">
 
-<div class="container">
-
-<!-- HEADER -->
-<div id="header">
+<!-- TOP BAR -->
+<div id="topbar">
   <h1>📊 Starlight Dashboard</h1>
   <button onclick="toggleTheme()">Toggle Theme</button>
 </div>
 
-<!-- TOP LAYOUT -->
-<div class="split">
+<div class="container">
 
-<!-- COUNTDOWN -->
+<!-- LEFT SIDE -->
+<div class="card">
+<h2>🗓️ Today’s Events</h2>
+<div id="events"></div>
+</div>
+
+<div class="card">
+<h2>🔗 Quick Links</h2>
+<a href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
+<a href="https://spotify.com" target="_blank">Spotify</a>
+<a href="https://mail.google.com" target="_blank">Mail</a>
+</div>
+
+<!-- RIGHT SIDE -->
 <div class="card">
 <h2>⏳ Countdown</h2>
-<input id="dateInput" type="datetime-local">
+<input id="dateInput" type="datetime-local"><br><br>
 <button onclick="startCountdown()">Start</button>
 <h3 id="countdown">No timer</h3>
 </div>
 
-<!-- TIME -->
 <div class="card">
 <h2>🕒 Time</h2>
 <h3 id="time"></h3>
 </div>
 
+<div class="card full">
+<h2>📁 Drive</h2>
+<button onclick="window.open('https://drive.google.com','_blank')">
+Open Drive
+</button>
 </div>
 
-<!-- TODAY EVENTS (FIXED CALENDAR) -->
-<div class="card">
-<h2>🗓️ Today's Events</h2>
-<div id="events"></div>
-</div>
-
-<!-- SYSTEM -->
-<div class="grid">
-
-<div class="card">
-<h2>📡 System</h2>
-<p>Server: Stable</p>
-<p>Security: Active</p>
-</div>
-
-<div class="card">
-<h2>🔗 Quick Links</h2>
-<p><a href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a></p>
-<p><a href="https://spotify.com" target="_blank">Spotify</a></p>
-<p><a href="https://mail.google.com" target="_blank">Mail</a></p>
+<div class="card full">
+<h2>🎵 Spotify Player</h2>
+<iframe style="border-radius:12px"
+src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
+width="100%" height="152"></iframe>
 </div>
 
 </div>
-
-</div>
-</div>
-
-<!-- VERSION -->
-<div class="version">
-<div>Starlight System</div>
-<div id="ver"></div>
 </div>
 
 <script>
@@ -246,12 +230,12 @@ const users = {
   wrightbec:"swim-time"
 };
 
-/* EVENTS DATABASE */
+/* EVENTS */
 const schedule = {
-  Monday: ["Sport Uniform"],
-  Tuesday: ["Sport Uniform"],
-  Wednesday: ["Assembly"],
-  Friday: ["Twilight (12th June)"]
+  Monday:["Sport Uniform"],
+  Tuesday:["Sport Uniform"],
+  Wednesday:["Assembly"],
+  Friday:["Twilight (12th June)"]
 };
 
 /* LOGIN */
@@ -268,35 +252,28 @@ function login(){
   }
 }
 
+/* EVENTS */
+function loadEvents(){
+  const day=new Date().toLocaleDateString("en-US",{weekday:"long"});
+  const box=document.getElementById("events");
+  box.innerHTML="";
+
+  if(schedule[day]){
+    schedule[day].forEach(e=>{
+      const d=document.createElement("div");
+      d.className="event";
+      d.innerText=e;
+      box.appendChild(d);
+    });
+  } else {
+    box.innerHTML="<div class='event'>No events today 🎉</div>";
+  }
+}
+
 /* CLOCK */
 setInterval(()=>{
   document.getElementById("time").innerText=new Date().toLocaleTimeString();
 },1000);
-
-/* THEME */
-function toggleTheme(){
-  document.body.classList.toggle("light");
-  document.body.classList.toggle("dark");
-}
-
-/* 🗓️ TODAY EVENTS */
-function loadEvents(){
-  const day = new Date().toLocaleDateString("en-US",{weekday:"long"});
-  const container = document.getElementById("events");
-
-  container.innerHTML = "";
-
-  if(schedule[day]){
-    schedule[day].forEach(ev=>{
-      const div=document.createElement("div");
-      div.className="event";
-      div.innerText=ev;
-      container.appendChild(div);
-    });
-  } else {
-    container.innerHTML = `<div class="event">No events today 🎉</div>`;
-  }
-}
 
 /* COUNTDOWN */
 function startCountdown(){
@@ -311,6 +288,12 @@ function startCountdown(){
   },1000);
 }
 
+/* THEME */
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  document.body.classList.toggle("dark");
+}
+
 /* CURSOR */
 document.addEventListener("mousemove",(e)=>{
   const c=document.getElementById("cursor");
@@ -318,7 +301,7 @@ document.addEventListener("mousemove",(e)=>{
   c.style.top=e.clientY+"px";
 });
 
-/* 🌌 STARS */
+/* 🌌 STARS ONLY */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
 
