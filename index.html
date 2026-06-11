@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png"
-href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png">
+href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png?v=4">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Starlight Management</title>
 
@@ -18,7 +20,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌌 STAR BACKGROUND ONLY */
+/* 🌌 STARS */
 #stars {
   position: fixed;
   inset: 0;
@@ -31,37 +33,21 @@ body.dark {
   color: white;
 }
 
-body.light {
-  background: radial-gradient(circle at top, #f4f6ff, #e9ecff);
-  color: #111;
-}
-
 /* 🧊 GLASS */
-.card, #topbar, .loginBox {
+.card, #topbar, .loginBox, #curfew {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
   box-shadow: 0 10px 35px rgba(0,0,0,0.35);
-}
-
-body.dark .card,
-body.dark #topbar,
-body.dark .loginBox {
   background: rgba(21, 28, 47, 0.55);
-}
-
-body.light .card,
-body.light #topbar,
-body.light .loginBox {
-  background: rgba(255,255,255,0.6);
 }
 
 /* LAYOUT */
 .container {
   padding: 20px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
@@ -77,23 +63,12 @@ body.light .loginBox {
 /* CARDS */
 .card {
   padding: 12px;
-  transition: 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* FULL WIDTH */
-.full {
-  grid-column: span 2;
 }
 
 /* TEXT */
-h1 { font-size: 20px; margin: 0; }
-h2 { font-size: 15px; margin-bottom: 6px; }
+h1 { font-size: 18px; margin: 0; }
+h2 { font-size: 14px; margin-bottom: 6px; }
 h3 { font-size: 13px; margin: 0; }
-p { font-size: 12px; }
 
 /* BUTTONS */
 button {
@@ -101,38 +76,19 @@ button {
   border-radius: 10px;
   border: none;
   font-size: 12px;
+  margin-top: 6px;
   background: linear-gradient(135deg,#4c6fff,#6a8dff);
   color: white;
   cursor: pointer;
 }
 
-/* QUICK LINKS */
-a {
-  display: block;
-  font-size: 12px;
-  margin-top: 6px;
-  color: inherit;
-  text-decoration: none;
-  padding: 6px;
-  border-radius: 8px;
-  background: rgba(76,110,255,0.15);
-}
-
-/* EVENTS */
-.event {
+/* INPUT */
+input {
   padding: 8px;
-  margin-top: 6px;
   border-radius: 10px;
-  background: rgba(255,255,255,0.08);
+  border: none;
+  margin-top: 6px;
   font-size: 12px;
-}
-
-/* LOGIN */
-#login {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 /* CURSOR */
@@ -146,7 +102,35 @@ a {
   transform: translate(-50%,-50%);
   z-index: 9999;
 }
-body.light .cursor { border-color:#111; }
+
+/* 🔒 CURFEW */
+#curfew {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 99999;
+}
+
+#curfew h1 {
+  font-size: 50px;
+}
+
+/* 🔐 LOGIN CENTERED */
+#login {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.loginBox {
+  padding: 25px;
+  width: 260px;
+}
 
 </style>
 </head>
@@ -156,12 +140,20 @@ body.light .cursor { border-color:#111; }
 <canvas id="stars"></canvas>
 <div class="cursor" id="cursor"></div>
 
+<!-- 🔒 CURFEW -->
+<div id="curfew">
+  <div>
+    <h1>🔒</h1>
+    <p>Curfew! - You can't use this app right now.</p>
+  </div>
+</div>
+
 <!-- LOGIN -->
 <div id="login">
-  <div class="loginBox" style="padding:25px;text-align:center;">
-    <h2>⭐ Starlight Login</h2>
-    <input id="user" placeholder="Username"><br><br>
-    <input id="pass" type="password" placeholder="Password"><br><br>
+  <div class="loginBox">
+    <h2>⭐ Login</h2>
+    <input id="user" placeholder="Username"><br>
+    <input id="pass" type="password" placeholder="Password"><br>
     <button onclick="login()">Login</button>
     <p id="error" style="color:red;"></p>
   </div>
@@ -170,52 +162,50 @@ body.light .cursor { border-color:#111; }
 <!-- APP -->
 <div id="app" style="display:none">
 
-<!-- TOP BAR -->
-<div id="topbar">
-  <h1>📊 Starlight Dashboard</h1>
-  <button onclick="toggleTheme()">Toggle Theme</button>
-</div>
-
 <div class="container">
 
-<!-- LEFT SIDE -->
+<div id="topbar">
+  <h1 id="greeting">Dashboard</h1>
+  <button onclick="toggleTheme()">Theme</button>
+</div>
+
+<!-- EVENTS -->
 <div class="card">
-<h2>🗓️ Today’s Events</h2>
+<h2>🗓️ Today</h2>
 <div id="events"></div>
 </div>
 
+<!-- LINKS -->
 <div class="card">
-<h2>🔗 Quick Links</h2>
+<h2>🔗 Links</h2>
 <a href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
 <a href="https://spotify.com" target="_blank">Spotify</a>
 <a href="https://mail.google.com" target="_blank">Mail</a>
 </div>
 
-<!-- RIGHT SIDE -->
+<!-- TIMER (UPDATED) -->
 <div class="card">
-<h2>⏳ Countdown</h2>
-<input id="dateInput" type="datetime-local"><br><br>
-<button onclick="startCountdown()">Start</button>
+<h2>⏳ Timer</h2>
+<input id="dateInput" type="datetime-local"><br>
+
+<button onclick="startTimer()">Start</button>
+<button onclick="stopTimer()">Stop</button>
+
 <h3 id="countdown">No timer</h3>
 </div>
 
+<!-- TIME -->
 <div class="card">
 <h2>🕒 Time</h2>
 <h3 id="time"></h3>
 </div>
 
-<div class="card full">
+<!-- DRIVE -->
+<div class="card">
 <h2>📁 Drive</h2>
 <button onclick="window.open('https://drive.google.com','_blank')">
 Open Drive
 </button>
-</div>
-
-<div class="card full">
-<h2>🎵 Spotify Player</h2>
-<iframe style="border-radius:12px"
-src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-width="100%" height="152"></iframe>
 </div>
 
 </div>
@@ -223,12 +213,71 @@ width="100%" height="152"></iframe>
 
 <script>
 
-/* USERS */
 const users = {
   stempchase:"Hmaw4357",
   vowlesjade:"hunger-game",
   wrightbec:"swim-time"
 };
+
+let currentTimer = null;
+
+/* CURFEW: 9:53PM - 8:24AM */
+function isCurfew(){
+  const h = new Date().getHours();
+  const m = new Date().getMinutes();
+
+  const minutes = h*60 + m;
+
+  const start = 21*60 + 53; // 9:53 PM
+  const end = 8*60 + 24;    // 8:24 AM
+
+  return (minutes >= start || minutes < end);
+}
+
+/* LOGIN */
+function login(){
+  const u=document.getElementById("user").value.trim();
+  const p=document.getElementById("pass").value.trim();
+
+  if(users[u] && users[u]===p){
+
+    if(isCurfew()){
+      document.getElementById("login").style.display="none";
+      document.getElementById("curfew").style.display="flex";
+      return;
+    }
+
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
+
+    setGreeting();
+    loadEvents();
+    startClock();
+
+  } else {
+    document.getElementById("error").innerText="Invalid login";
+  }
+}
+
+/* GREETING */
+function setGreeting(){
+  const h=new Date().getHours();
+  let g="Good Evening";
+
+  if(h<12) g="Good Morning";
+  else if(h<18) g="Good Afternoon";
+
+  document.getElementById("greeting").innerText =
+  `${g}, ${document.getElementById("user").value}`;
+}
+
+/* CLOCK */
+function startClock(){
+  setInterval(()=>{
+    document.getElementById("time").innerText =
+    new Date().toLocaleTimeString();
+  },1000);
+}
 
 /* EVENTS */
 const schedule = {
@@ -238,54 +287,41 @@ const schedule = {
   Friday:["Twilight (12th June)"]
 };
 
-/* LOGIN */
-function login(){
-  const u=document.getElementById("user").value.trim();
-  const p=document.getElementById("pass").value.trim();
-
-  if(users[u] && users[u]===p){
-    document.getElementById("login").style.display="none";
-    document.getElementById("app").style.display="block";
-    loadEvents();
-  } else {
-    document.getElementById("error").innerText="Invalid login";
-  }
-}
-
-/* EVENTS */
 function loadEvents(){
   const day=new Date().toLocaleDateString("en-US",{weekday:"long"});
   const box=document.getElementById("events");
-  box.innerHTML="";
 
-  if(schedule[day]){
-    schedule[day].forEach(e=>{
-      const d=document.createElement("div");
-      d.className="event";
-      d.innerText=e;
-      box.appendChild(d);
-    });
-  } else {
-    box.innerHTML="<div class='event'>No events today 🎉</div>";
-  }
+  box.innerHTML = schedule[day]
+    ? schedule[day].map(e=>`<div>${e}</div>`).join("")
+    : "No events today 🎉";
 }
 
-/* CLOCK */
-setInterval(()=>{
-  document.getElementById("time").innerText=new Date().toLocaleTimeString();
-},1000);
+/* ⏳ TIMER START */
+function startTimer(){
+  const t = new Date(document.getElementById("dateInput").value).getTime();
 
-/* COUNTDOWN */
-function startCountdown(){
-  const t=new Date(document.getElementById("dateInput").value).getTime();
+  stopTimer();
 
-  setInterval(()=>{
-    const d=t-Date.now();
-    if(d<=0)return;
+  currentTimer = setInterval(()=>{
+    const d = t - Date.now();
+    if(d <= 0){
+      document.getElementById("countdown").innerText = "Done!";
+      return;
+    }
 
-    document.getElementById("countdown").innerText=
+    document.getElementById("countdown").innerText =
     `${Math.floor(d/86400000)}d ${Math.floor((d%86400000)/3600000)}h ${Math.floor((d%3600000)/60000)}m ${Math.floor((d%60000)/1000)}s`;
+
   },1000);
+}
+
+/* STOP TIMER */
+function stopTimer(){
+  if(currentTimer){
+    clearInterval(currentTimer);
+    currentTimer = null;
+  }
+  document.getElementById("countdown").innerText = "Stopped";
 }
 
 /* THEME */
@@ -301,7 +337,7 @@ document.addEventListener("mousemove",(e)=>{
   c.style.top=e.clientY+"px";
 });
 
-/* 🌌 STARS ONLY */
+/* 🌌 STARS */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
 
