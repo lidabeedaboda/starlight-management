@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- ⭐ FAVICON -->
 <link rel="icon" type="image/png"
 href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png">
 
@@ -19,14 +18,14 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌌 STAR CANVAS */
-#stars {
+/* 🌌 BACKGROUND CANVAS */
+#stars, #shootingStars {
   position: fixed;
   inset: 0;
   z-index: -2;
 }
 
-/* 🌙 BACKGROUNDS */
+/* 🌙 BACKGROUND */
 body.dark {
   background: radial-gradient(circle at top, #0b0f1a, #05070d);
   color: white;
@@ -37,14 +36,13 @@ body.light {
   color: #111;
 }
 
-/* 🧊 GLASS UI */
+/* 🧊 GLASS */
 .card, .loginBox, #settings {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 10px 40px rgba(0,0,0,0.35);
   border-radius: 18px;
-  transition: 0.25s;
 }
 
 body.dark .card,
@@ -56,83 +54,59 @@ body.dark #settings {
 body.light .card,
 body.light .loginBox,
 body.light #settings {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255,255,255,0.6);
 }
 
 /* LAYOUT */
-.container {
-  padding: 30px;
-  padding-bottom: 90px;
-}
+.container { padding: 30px; padding-bottom: 100px; }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2,1fr);
   gap: 15px;
 }
 
-/* CARD */
-.card {
-  padding: 15px;
+.split {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
 }
 
-.card:hover {
-  transform: translateY(-4px);
+.card { padding: 15px; }
+
+/* QUICK LINKS */
+.quickLinks a {
+  display: block;
+  font-size: 12px;
+  padding: 6px 8px;
+  margin-top: 6px;
+  border-radius: 8px;
+  text-decoration: none;
+  background: rgba(76,110,255,0.15);
+  color: inherit;
 }
 
-/* BUTTONS */
-button {
-  padding: 10px;
+.quickLinks a:hover {
+  background: rgba(76,110,255,0.3);
+}
+
+/* CALENDAR */
+.calendarDay {
+  padding: 8px;
+  margin-top: 6px;
   border-radius: 10px;
-  border: none;
-  margin-top: 10px;
-  font-family: inherit;
-  background: linear-gradient(135deg, #4c6fff, #6a8dff);
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-button:hover {
-  transform: scale(1.04);
-}
-
-/* INPUT */
-input {
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  margin-top: 10px;
-  font-family: inherit;
-}
-
-/* LOGIN */
-#login {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* SETTINGS */
-#settings {
-  position: fixed;
-  right: 20px;
-  top: 80px;
-  display: none;
-  padding: 15px;
-  z-index: 999;
+  background: rgba(255,255,255,0.08);
+  font-size: 13px;
 }
 
 /* CURSOR */
 .cursor {
-  width: 14px;
-  height: 14px;
-  border: 2px solid white;
+  width: 14px; height: 14px;
   border-radius: 50%;
+  border: 2px solid white;
   position: fixed;
   pointer-events: none;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%,-50%);
   z-index: 9999;
 }
 body.light .cursor { border-color:#111; }
@@ -157,75 +131,26 @@ body.light .cursor { border-color:#111; }
   padding: 12px;
   border-radius: 10px;
   display: none;
-  max-width: 220px;
   backdrop-filter: blur(12px);
   background: rgba(20,20,30,0.7);
 }
-
-/* 🔗 QUICK LINKS SMALL */
-.quickLinks a {
-  display: block;
-  font-size: 12px;
-  padding: 6px 8px;
-  margin-top: 6px;
-  border-radius: 8px;
-  text-decoration: none;
-  background: rgba(76,110,255,0.15);
-  color: inherit;
-  transition: 0.2s;
-}
-
-.quickLinks a:hover {
-  background: rgba(76,110,255,0.3);
-  transform: translateX(2px);
-}
-
-/* 🧊 SPLIT LAYOUT */
-.split {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 15px;
-}
-
-/* BIG */
-.big { grid-column: span 2; }
-
 </style>
 </head>
 
 <body class="dark">
 
-<!-- 🌌 STARS -->
+<!-- 🌌 BACKGROUND -->
 <canvas id="stars"></canvas>
-
-<script>
-const users = {
-  stempchase:"Hmaw4357",
-  vowlesjade:"hunger-game",
-  wrightbec:"swim-time"
-};
-
-let version = 1.0;
-
-const quotes = [
-  "💗 You are loved",
-  "⭐️ Live life to the fullest",
-  "🌈 Keep going, you're doing great",
-  "🔥 Stay strong",
-  "💫 You matter",
-  "🚀 Keep pushing forward",
-  "🌻 Today is a new chance"
-];
-</script>
+<canvas id="shootingStars"></canvas>
 
 <div class="cursor" id="cursor"></div>
 
 <!-- LOGIN -->
-<div id="login">
+<div id="login" style="height:100vh;display:flex;justify-content:center;align-items:center;">
   <div class="loginBox" style="padding:30px;text-align:center;">
     <h2>Starlight Login</h2>
-    <input id="user" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
+    <input id="user" placeholder="Username"><br>
+    <input id="pass" type="password" placeholder="Password"><br>
     <button onclick="login()">Login</button>
     <p id="error" style="color:red;"></p>
   </div>
@@ -238,11 +163,12 @@ const quotes = [
 
 <h1>📊 Starlight Dashboard</h1>
 
-<button onclick="toggleSettings()">⚙️ Settings</button>
+<button onclick="toggleTheme()">Light / Dark</button>
 
-<!-- SPLIT: COUNTDOWN + QUICK LINKS -->
+<!-- SPLIT -->
 <div class="split">
 
+<!-- COUNTDOWN -->
 <div class="card">
 <h2>⏳ Countdown</h2>
 <input id="dateInput" type="datetime-local">
@@ -250,6 +176,7 @@ const quotes = [
 <h3 id="countdown">No timer</h3>
 </div>
 
+<!-- QUICK LINKS -->
 <div class="card quickLinks">
 <h3>🔗 Quick Links</h3>
 <a href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
@@ -259,6 +186,18 @@ const quotes = [
 
 </div>
 
+<!-- CALENDAR -->
+<div class="card">
+<h2>📅 Calendar</h2>
+
+<div class="calendarDay">Monday — Sport Uniform</div>
+<div class="calendarDay">Tuesday — Sport Uniform</div>
+<div class="calendarDay">Wednesday — Assembly</div>
+<div class="calendarDay">Friday 12th June — Twilight</div>
+
+</div>
+
+<!-- GRID -->
 <div class="grid">
 
 <div class="card">
@@ -272,22 +211,10 @@ const quotes = [
 <p>Security: Active</p>
 </div>
 
-<div class="card big">
-<h2>📌 Notice Board</h2>
-<p>hii all! there are no exams for the rest of the term woo!</p>
 </div>
 
 </div>
 </div>
-</div>
-
-<!-- SETTINGS -->
-<div id="settings">
-<button onclick="toggleTheme()">Light / Dark</button>
-</div>
-
-<!-- NOTIF -->
-<div id="notif"></div>
 
 <!-- VERSION -->
 <div class="version">
@@ -297,6 +224,13 @@ const quotes = [
 
 <script>
 
+/* USERS */
+const users = {
+  stempchase:"Hmaw4357",
+  vowlesjade:"hunger-game",
+  wrightbec:"swim-time"
+};
+
 /* LOGIN */
 function login(){
   const u=document.getElementById("user").value.trim();
@@ -305,7 +239,6 @@ function login(){
   if(users[u] && users[u]===p){
     document.getElementById("login").style.display="none";
     document.getElementById("app").style.display="block";
-    startNotifications();
   } else {
     document.getElementById("error").innerText="Invalid login";
   }
@@ -313,8 +246,7 @@ function login(){
 
 /* CLOCK */
 setInterval(()=>{
-  document.getElementById("time").innerText =
-  new Date().toLocaleTimeString();
+  document.getElementById("time").innerText=new Date().toLocaleTimeString();
 },1000);
 
 /* COUNTDOWN */
@@ -325,20 +257,9 @@ function startCountdown(){
     const d=t-Date.now();
     if(d<=0)return;
 
-    const dd=Math.floor(d/86400000);
-    const hh=Math.floor((d%86400000)/3600000);
-    const mm=Math.floor((d%3600000)/60000);
-    const ss=Math.floor((d%60000)/1000);
-
     document.getElementById("countdown").innerText=
-    `${dd}d ${hh}h ${mm}m ${ss}s`;
+    `${Math.floor(d/86400000)}d ${Math.floor((d%86400000)/3600000)}h ${Math.floor((d%3600000)/60000)}m ${Math.floor((d%60000)/1000)}s`;
   },1000);
-}
-
-/* SETTINGS */
-function toggleSettings(){
-  const s=document.getElementById("settings");
-  s.style.display=s.style.display==="block"?"none":"block";
 }
 
 /* THEME */
@@ -354,74 +275,84 @@ document.addEventListener("mousemove",(e)=>{
   c.style.top=e.clientY+"px";
 });
 
-/* NOTIF */
-function notify(msg){
-  const n=document.getElementById("notif");
-  n.innerText=msg;
-  n.style.display="block";
-  setTimeout(()=>n.style.display="none",4000);
-}
-
-function startNotifications(){
-  setInterval(()=>{
-    if(Math.random()>0.6){
-      notify(quotes[Math.floor(Math.random()*quotes.length)]);
-    }
-  },12000);
-}
-
-/* VERSION */
-document.getElementById("ver").innerText=
-`v${version.toFixed(1)} • build ${Math.floor(Math.random()*900+100)}`;
-
-/* 🌌 STAR BACKGROUND */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-
-let stars=[];
-let w,h;
+/* 🌌 STAR FIELD */
+const starsCanvas=document.getElementById("stars");
+const sctx=starsCanvas.getContext("2d");
+let w,h,stars=[];
 
 function resize(){
-  w=canvas.width=window.innerWidth;
-  h=canvas.height=window.innerHeight;
+  w=starsCanvas.width=window.innerWidth;
+  h=starsCanvas.height=window.innerHeight;
 }
-
-window.addEventListener("resize",resize);
 resize();
+window.addEventListener("resize",resize);
 
-function init(){
-  for(let i=0;i<120;i++){
-    stars.push({
-      x:Math.random()*w,
-      y:Math.random()*h,
-      r:Math.random()*1.5,
-      s:Math.random()*0.4+0.1,
-      a:Math.random()
-    });
-  }
+for(let i=0;i<120;i++){
+  stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5,s:Math.random()*0.4+0.1});
 }
 
-function draw(){
-  ctx.clearRect(0,0,w,h);
-
+function drawStars(){
+  sctx.clearRect(0,0,w,h);
   for(let s of stars){
-    ctx.fillStyle=`rgba(255,255,255,${s.a})`;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fill();
+    sctx.beginPath();
+    sctx.fillStyle="white";
+    sctx.globalAlpha=0.8;
+    sctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    sctx.fill();
 
     s.y+=s.s;
-    if(s.y>h){
-      s.y=0;
-      s.x=Math.random()*w;
-    }
+    if(s.y>h){ s.y=0; s.x=Math.random()*w; }
   }
+  requestAnimationFrame(drawStars);
+}
+drawStars();
 
-  requestAnimationFrame(draw);
+/* 🌠 SHOOTING STARS */
+const shotCanvas=document.getElementById("shootingStars");
+const shctx=shotCanvas.getContext("2d");
+
+let sw,sh,shots=[];
+
+function resize2(){
+  sw=shotCanvas.width=window.innerWidth;
+  sh=shotCanvas.height=window.innerHeight;
+}
+resize2();
+window.addEventListener("resize",resize2);
+
+function spawnShot(){
+  shots.push({
+    x:Math.random()*sw,
+    y:Math.random()*sh/2,
+    len:Math.random()*80+80,
+    speed:Math.random()*8+6,
+    life:0
+  });
 }
 
-init();
-draw();
+setInterval(spawnShot,2500);
+
+function drawShots(){
+  shctx.clearRect(0,0,sw,sh);
+
+  for(let i=shots.length-1;i>=0;i--){
+    let s=shots[i];
+    shctx.strokeStyle="white";
+    shctx.globalAlpha=1;
+    shctx.beginPath();
+    shctx.moveTo(s.x,s.y);
+    shctx.lineTo(s.x-s.len,s.y+s.len/2);
+    shctx.stroke();
+
+    s.x+=s.speed;
+    s.y+=s.speed;
+
+    if(s.x>sw||s.y>sh)shots.splice(i,1);
+  }
+
+  requestAnimationFrame(drawShots);
+}
+drawShots();
 
 </script>
 
