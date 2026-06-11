@@ -1,16 +1,3 @@
-Here is the completely upgraded, highly aesthetic version of your application.
-
-### 🌌 What Was Upgraded & Added
-
-* **Modernized Typography & Layout:** Swapped the bulky font for **'Outfit'**, a clean, ultra-modern geometric typeface. The layout is now an asymmetrical responsive grid with full support for mobile, tablets, and wide screens.
-* **Premium Glassmorphism:** Added a glowing neon border, satin-like backdrop filters, and subtle smooth transitions when hovering over cards or buttons.
-* **Interactive Custom Cursor:** The cursor is now a fluid dynamic ring that expands into an accent-colored circle whenever you hover over clickable links, inputs, or buttons.
-* **Advanced Particle Background:** Replaced the simple dropping blocks with an organic, drifting starfield that interactive canvas resizing handles seamlessly.
-* **Added Light & Dark Theme Support:** Fully customized CSS properties for both dark space aesthetics and a sleek, milky-white glass light mode.
-* **Added a Quick Notes Widget:** A persistent sticky notepad in the dashboard that auto-saves what you type using `localStorage`.
-* **Enhanced Modern Form Controls:** Beautiful modern inputs, micro-spaced text layouts, and clean button gradients with soft depth shadows.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +47,6 @@ body {
   transition: background 0.5s ease, color 0.3s ease;
 }
 
-/* 🌌 STARS CANVAS */
 #stars {
   position: fixed;
   inset: 0;
@@ -68,7 +54,6 @@ body {
   pointer-events: none;
 }
 
-/* 🧊 PREMIUM GLASS */
 .glass-panel {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -84,7 +69,6 @@ body {
   box-shadow: var(--card-shadow), 0 0 25px var(--glow-color);
 }
 
-/* 🧭 LAYOUT STRATEGY */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -128,7 +112,6 @@ body {
   .card, .card.wide, #topbar { grid-column: span 12; }
 }
 
-/* 🏷️ TYPOGRAPHY */
 h2 {
   font-size: 16px;
   font-weight: 600;
@@ -148,7 +131,6 @@ h3 {
   letter-spacing: -0.5px;
 }
 
-/* 🕹️ UI INTERACTION ELEMENTS */
 button {
   padding: 12px 24px;
   border-radius: 14px;
@@ -172,7 +154,7 @@ button:active {
   transform: translateY(0);
 }
 
-input, textarea {
+input {
   padding: 14px;
   border-radius: 14px;
   border: 1px solid var(--glass-border);
@@ -183,19 +165,65 @@ input, textarea {
   outline: none;
   transition: all 0.2s ease;
 }
-.light input, .light textarea {
+.light input {
   background: rgba(255, 255, 255, 0.4);
 }
 
-input:focus, textarea:focus {
+input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px var(--glow-color);
 }
 
-/* 🔗 GRID LINKS */
+/* 🗓️ MULTI-DAY SCHEDULE EVENTS */
+.event-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 220px;
+  padding-right: 4px;
+}
+
+.event-timeline::-webkit-scrollbar {
+  width: 4px;
+}
+.event-timeline::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 4px;
+}
+
+.timeline-item {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timeline-item.active {
+  border-left: 3px solid #6366f1;
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.timeline-day {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #6366f1;
+  letter-spacing: 0.5px;
+}
+
+.timeline-desc {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 🔗 LINKS GRID */
 .link-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 10px;
   margin-top: auto;
 }
@@ -218,15 +246,7 @@ input:focus, textarea:focus {
   border-color: transparent;
 }
 
-/* 📝 QUICK NOTES WIDGET */
-#notesArea {
-  width: 100%;
-  height: 100px;
-  resize: none;
-  margin-top: 8px;
-}
-
-/* 🎯 CUSTOM CURSOR */
+/* 🎯 CURSOR */
 .cursor-ring {
   width: 26px;
   height: 26px;
@@ -268,7 +288,7 @@ input:focus, textarea:focus {
 #curfew h1 { font-size: 72px; margin: 0; animation: float 3s ease-in-out infinite; }
 #curfew p { font-size: 20px; color: #a5b4fc; max-width: 400px; line-height: 1.6; }
 
-/* 🔐 LOGIN SYSTEM */
+/* 🔐 LOGIN CARD */
 #login {
   min-height: 100vh;
   display: flex;
@@ -289,10 +309,8 @@ input:focus, textarea:focus {
 .loginBox button { width: 100%; margin-top: 10px; }
 #error { font-size: 13px; font-weight: 500; margin: 12px 0 0 0; min-height: 18px; }
 
-/* ⚡ UTILITIES */
 .timer-controls { display: flex; gap: 8px; margin: 12px 0; }
 .timer-controls button { flex: 1; }
-#events { font-size: 18px; font-weight: 500; margin: auto 0; }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -314,7 +332,7 @@ input:focus, textarea:focus {
 
 <div id="login">
   <div class="glass-panel loginBox">
-    <h2>⭐ System Gateway</h2>
+    <h2>⭐ Starlight Gateway</h2>
     <input id="user" placeholder="Username" spellcheck="false">
     <input id="pass" type="password" placeholder="Password">
     <button onclick="login()">Authenticate</button>
@@ -326,21 +344,14 @@ input:focus, textarea:focus {
   <div class="container">
     
     <div id="topbar" class="glass-panel">
-      <h1 id="greeting">Welcome Explorer</h1>
+      <h1 id="greeting">Starlight Management</h1>
       <button onclick="toggleTheme()" style="padding: 8px 18px; font-size: 13px;">Interface Mode</button>
     </div>
 
-    <div class="card glass-panel">
-      <h2>🗓️ Today's Orbit</h2>
-      <div id="events">Loading itinerary...</div>
-    </div>
-
-    <div class="card glass-panel">
-      <h2>📁 Cloud Storage</h2>
-      <p style="color: var(--text-secondary); font-size: 14px; margin-top: 0;">Access linked project drives and cloud storage accounts.</p>
-      <button onclick="window.open('https://drive.google.com','_blank')" style="margin-top: auto; width: 100%;">
-        Launch Google Drive
-      </button>
+    <div class="card glass-panel wide">
+      <h2>🗓️ Stream Itinerary</h2>
+      <div class="event-timeline" id="events">
+        </div>
     </div>
 
     <div class="card glass-panel">
@@ -348,8 +359,16 @@ input:focus, textarea:focus {
       <h3 id="time">00:00:00</h3>
     </div>
 
+    <div class="card glass-panel">
+      <h2>📁 Cloud Storage</h2>
+      <p style="color: var(--text-secondary); font-size: 14px; margin-top: 0; margin-bottom: 20px;">Access linked project drives and cloud storage accounts.</p>
+      <button onclick="window.open('https://drive.google.com','_blank')" style="margin-top: auto; width: 100%;">
+        Open Drive
+      </button>
+    </div>
+
     <div class="card glass-panel wide">
-      <h2>⏳ Starlight Countdown</h2>
+      <h2>⏳ Countdown Node</h2>
       <input id="dateInput" type="datetime-local" style="width: 100%;">
       <div class="timer-controls">
         <button onclick="startTimer()">Initiate</button>
@@ -358,19 +377,13 @@ input:focus, textarea:focus {
       <h3 id="countdown" style="font-size: 20px; font-weight: 600; text-align: center;">No active countdowns</h3>
     </div>
 
-    <div class="card glass-panel wide">
-      <h2>🔗 Node Matrix Links</h2>
+    <div class="card glass-panel">
+      <h2>🔗 Node Links</h2>
       <div class="link-grid">
         <a class="link-card" href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
         <a class="link-card" href="https://spotify.com" target="_blank">Spotify Player</a>
         <a class="link-card" href="https://mail.google.com" target="_blank">Google Mail</a>
-        <a class="link-card" href="https://github.com" target="_blank">GitHub Node</a>
       </div>
-    </div>
-
-    <div class="card glass-panel full">
-      <h2>📝 Tactical Mission Notes</h2>
-      <textarea id="notesArea" placeholder="Draft fast notes here... (Saves automatically)" oninput="saveNotes()"></textarea>
     </div>
 
   </div>
@@ -385,7 +398,7 @@ const users = {
 
 let currentTimer = null;
 
-/* CURFEW VERIFICATION: 9:53PM - 8:24AM */
+/* CURFEW MODULE ENGINE: 9:53PM - 8:24AM */
 function isCurfew(){
   const h = new Date().getHours();
   const m = new Date().getMinutes();
@@ -397,7 +410,7 @@ function isCurfew(){
   return (minutes >= start || minutes < end);
 }
 
-/* INTERFACE SYSTEM GATEWAY (LOGIN) */
+/* GATEWAY ACCESS SECURITY (LOGIN) */
 function login(){
   const u = document.getElementById("user").value.trim();
   const p = document.getElementById("pass").value.trim();
@@ -415,27 +428,26 @@ function login(){
     setGreeting();
     loadEvents();
     startClock();
-    loadNotes(); // Initialization of custom feature
+    attachCursorListeners();
   } else {
     document.getElementById("error").innerText = "Security clearance rejected.";
   }
 }
 
-/* SYSTEM GREETING CHANGER */
+/* SYSTEM GREETING MODULE */
 function setGreeting(){
   const h = new Date().getHours();
   let g = "Good Evening";
   if(h < 12) g = "Good Morning";
   else if(h < 18) g = "Good Afternoon";
 
-  // Formats user handles beautifully by capitalizing first letters
   const rawUser = document.getElementById("user").value;
   const beautifulUser = rawUser.charAt(0).toUpperCase() + rawUser.slice(1);
 
   document.getElementById("greeting").innerText = `${g}, ${beautifulUser}`;
 }
 
-/* PRECISION ENGINE INTERFACE CLOCK */
+/* RUN ENGINE PRECISION CLOCK */
 function startClock(){
   const clockEl = document.getElementById("time");
   setInterval(() => {
@@ -443,24 +455,40 @@ function startClock(){
   }, 1000);
 }
 
-/* SCHEDULING ENGINES */
-const schedule = {
-  Monday: ["👕 Sport Uniform Day"],
-  Tuesday: ["👕 Sport Uniform Day"],
-  Wednesday: ["🎭 School Assembly Session"],
-  Friday: ["🌆 Twilight Gathering (12th June)"]
-};
+/* FUTURE-PROOF ITINERARY MATRIX ENGINE */
+const schedule = [
+  { day: "Monday", event: "Sport Uniform" },
+  { day: "Tuesday", event: "Sport Uniform" },
+  { day: "Wednesday", event: "Assembly" },
+  { day: "Thursday", event: "No scheduled events" },
+  { day: "Friday", event: "Twilight (12th June)" },
+  { day: "Saturday", event: "No scheduled events" },
+  { day: "Sunday", event: "No scheduled events" }
+];
 
 function loadEvents(){
-  const day = new Date().toLocaleDateString("en-US", { weekday: "long" });
+  const currentDayStr = new Date().toLocaleDateString("en-US", { weekday: "long" });
   const box = document.getElementById("events");
 
-  box.innerHTML = schedule[day]
-    ? schedule[day].map(e => `<div style="margin-bottom:6px; background:rgba(99,102,241,0.1); padding:10px; border-radius:8px;">${e}</div>`).join("")
-    : "System clear. No events today! 🎉";
+  // Re-order matrix schedule array to display Today first, followed sequentially by future days
+  const todayIdx = schedule.findIndex(item => item.day === currentDayStr);
+  const orderedSchedule = [
+    ...schedule.slice(todayIdx >= 0 ? todayIdx : 0),
+    ...schedule.slice(0, todayIdx >= 0 ? todayIdx : 0)
+  ];
+
+  box.innerHTML = orderedSchedule.map(item => {
+    const isToday = item.day === currentDayStr;
+    return `
+      <div class="timeline-item ${isToday ? 'active' : ''}">
+        <span class="timeline-day">${item.day} ${isToday ? '• TODAY' : '• FUTURE'}</span>
+        <span class="timeline-desc">${item.event}</span>
+      </div>
+    `;
+  }).join("");
 }
 
-/* COUNTDOWN ENGINE */
+/* PRECISION INTERVAL TIMER ENGINE */
 function startTimer(){
   const targetVal = document.getElementById("dateInput").value;
   if(!targetVal) return;
@@ -493,34 +521,27 @@ function stopTimer(){
   document.getElementById("countdown").innerText = "Standby Monitor Off";
 }
 
-/* AUTO-SAVING NOTES APP MATRIX FEATURE */
-function saveNotes() {
-  localStorage.setItem("starlight_notes", document.getElementById("notesArea").value);
-}
-function loadNotes() {
-  const saved = localStorage.getItem("starlight_notes");
-  if(saved) document.getElementById("notesArea").value = saved;
-}
-
-/* DESIGN ARCHITECTURE THEME CONTROLLER */
+/* ARCHITECTURE VISUAL MODE SYSTEM CONTROLLER */
 function toggleTheme(){
   document.body.classList.toggle("light");
 }
 
-/* MAGNETIC FLUID CURSOR TRACKING SYSTEMS */
+/* TRACKING MAGNETIC CURSOR ARTIFACT */
 const cursor = document.getElementById("cursor");
 document.addEventListener("mousemove", (e) => {
   cursor.style.left = e.clientX + "px";
   cursor.style.top = e.clientY + "px";
 });
 
-// Detect actionable elements to animate custom cursor scale modifications
-document.querySelectorAll("button, input, a, textarea").forEach(elem => {
-  elem.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
-  elem.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
-});
+function attachCursorListeners() {
+  document.querySelectorAll("button, input, a").forEach(elem => {
+    elem.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
+    elem.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
+  });
+}
+attachCursorListeners();
 
-/* INTERACTIVE RESIZING PARTICLE BACKGROUND GENERATOR */
+/* ENGINE DRIVEN STARS BACKGROUND MATRIX */
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 let w, h, stars = [];
@@ -532,7 +553,6 @@ function resize(){
 resize();
 window.addEventListener("resize", resize);
 
-// Construct star nodes
 for(let i = 0; i < 140; i++){
   stars.push({
     x: Math.random() * window.innerWidth,
@@ -546,9 +566,7 @@ for(let i = 0; i < 140; i++){
 function draw(){
   ctx.clearRect(0, 0, w, h);
   for(let s of stars){
-    ctx.fillStyle = document.body.classList.contains("light") ? "rgba(99, 102, 241, opacity)" : "rgba(255, 255, 255, opacity)";
-    
-    // Smoothly mutate star opacity values for atmospheric twinkling properties
+    ctx.fillStyle = "white";
     s.alpha += s.speed;
     if(s.alpha > 1 || s.alpha < 0.1) s.speed = -s.speed;
     
@@ -564,5 +582,3 @@ draw();
 
 </body>
 </html>
-
-```
