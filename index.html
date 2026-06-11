@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png?v=2">
-  <title>Starlight Management</title>
-</head>
+<meta charset="UTF-8">
+
+<!-- ⭐ FAVICON FIXED -->
+<link rel="icon" type="image/png" sizes="32x32"
+href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png">
+
+<title>Starlight Management</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 
@@ -13,110 +17,159 @@ body {
   font-family: 'Fredoka One', cursive;
   cursor: none;
   transition: 0.3s;
+  overflow-x: hidden;
 }
 
-/* THEMES */
-body.dark { background:#0b0f1a; color:white; }
-body.light { background:#f4f6ff; color:#111; }
+/* 🌙 THEMES */
+body.dark {
+  background: radial-gradient(circle at top, #0b0f1a, #05070d);
+  color: white;
+}
+body.light {
+  background: radial-gradient(circle at top, #f4f6ff, #e9ecff);
+  color: #111;
+}
 
-.container { padding:30px; padding-bottom:80px; }
+/* ✨ GLASS EFFECT */
+.card, .loginBox, #settings {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
 
+body.dark .card,
+body.dark .loginBox,
+body.dark #settings {
+  background: rgba(21, 28, 47, 0.6);
+}
+
+body.light .card,
+body.light .loginBox,
+body.light #settings {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* CONTAINER */
+.container {
+  padding: 30px;
+  padding-bottom: 100px;
+}
+
+/* GRID */
 .grid {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 }
 
+/* CARDS */
 .card {
-  padding:15px;
-  border-radius:12px;
+  padding: 15px;
+  border-radius: 16px;
+  transition: 0.3s;
 }
 
-body.dark .card { background:#151c2f; }
-body.light .card { background:white; }
-
-input,button {
-  padding:10px;
-  border-radius:8px;
-  border:none;
-  margin-top:10px;
-  font-family:'Fredoka One',cursive;
+.card:hover {
+  transform: translateY(-3px);
 }
 
-button { background:#4c6fff; color:white; cursor:pointer; }
+/* INPUTS */
+input, button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  font-family: 'Fredoka One', cursive;
+}
 
-.big { grid-column:span 2; }
+button {
+  background: linear-gradient(135deg, #4c6fff, #6a8dff);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+/* BIG CARDS */
+.big { grid-column: span 2; }
 
 /* LOGIN */
 #login {
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-.loginBox {
-  text-align:center;
-  padding:30px;
-  border-radius:12px;
-}
-
-body.dark .loginBox { background:#151c2f; }
-body.light .loginBox { background:white; }
 
 /* SETTINGS */
 #settings {
-  position:fixed;
-  right:20px;
-  top:80px;
-  display:none;
-  padding:15px;
-  border-radius:12px;
-  z-index:999;
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  display: none;
+  padding: 15px;
+  border-radius: 12px;
+  z-index: 999;
 }
-
-body.dark #settings { background:#151c2f; }
-body.light #settings { background:white; }
 
 /* CURSOR */
 .cursor {
-  width:14px;
-  height:14px;
-  border:2px solid white;
-  border-radius:50%;
-  position:fixed;
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  z-index:9999;
+  width: 14px;
+  height: 14px;
+  border: 2px solid white;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
 }
-
-body.light .cursor { border-color:#111; }
+body.light .cursor { border-color: #111; }
 
 /* VERSION */
 .version {
-  position:fixed;
-  bottom:0;
-  width:100%;
-  font-size:12px;
-  padding:8px;
-  display:flex;
-  justify-content:space-between;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 12px;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
 }
 
-body.dark .version { background:#0a0d16; color:#aaa; }
-body.light .version { background:#e9ecff; color:#333; }
-
-/* NOTIFICATION */
+/* NOTIF */
 #notif {
-  position:fixed;
-  bottom:60px;
-  right:20px;
-  background:#151c2f;
-  padding:12px;
-  border-radius:10px;
-  display:none;
-  max-width:220px;
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  background: rgba(21,28,47,0.9);
+  padding: 12px;
+  border-radius: 10px;
+  display: none;
+  max-width: 220px;
 }
+
+/* 🔗 QUICK LINKS */
+.linkBtn {
+  display: block;
+  text-decoration: none;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(76,110,255,0.2);
+  color: inherit;
+  transition: 0.2s;
+}
+
+.linkBtn:hover {
+  background: rgba(76,110,255,0.4);
+  transform: translateX(3px);
+}
+
 </style>
 </head>
 
@@ -133,7 +186,6 @@ const users = {
 
 let version = 1.0;
 
-/* QUOTES */
 const quotes = [
   "💗 You are loved",
   "⭐️ Live life to the fullest",
@@ -146,15 +198,7 @@ const quotes = [
 ];
 </script>
 
-<!-- LOCKDOWN -->
-<div id="lockdown" style="display:none;position:fixed;inset:0;background:#0b0f1a;justify-content:center;align-items:center;text-align:center;z-index:99999;">
-  <div>
-    <h1>🔒</h1>
-    <h2>Whoops!</h2>
-    <p>Your administrator has locked this website temporarily.</p>
-  </div>
-</div>
-
+<!-- CURSOR -->
 <div class="cursor" id="cursor"></div>
 
 <!-- LOGIN -->
@@ -168,7 +212,7 @@ const quotes = [
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- APP -->
 <div id="app" style="display:none">
 
 <div class="container">
@@ -179,13 +223,29 @@ const quotes = [
 
 <div class="grid">
 
-<!-- NOTICE -->
 <div class="card big">
 <h2>📌 Notice Board</h2>
 <p>hii all! there are no exams for the rest of the term woo!</p>
 </div>
 
-<!-- COUNTDOWN -->
+<!-- 🔗 QUICK LINKS -->
+<div class="card big">
+<h2>🔗 Quick Links</h2>
+
+<a class="linkBtn" href="https://portal.inaburra.school/auth/portal" target="_blank">
+School Portal
+</a>
+
+<a class="linkBtn" href="https://spotify.com" target="_blank">
+Spotify
+</a>
+
+<a class="linkBtn" href="https://mail.google.com" target="_blank">
+Mail
+</a>
+
+</div>
+
 <div class="card big">
 <h2>⏳ Countdown</h2>
 <input id="dateInput" type="datetime-local">
@@ -193,33 +253,15 @@ const quotes = [
 <h3 id="countdown">No timer</h3>
 </div>
 
-<!-- TIME -->
 <div class="card">
 <h2>🕒 Time</h2>
 <h3 id="time"></h3>
 </div>
 
-<!-- SYSTEM -->
 <div class="card">
 <h2>📡 System</h2>
 <p>Server: Stable</p>
 <p>Security: Active</p>
-</div>
-
-<!-- SPOTIFY -->
-<div class="card big">
-<h2>🎵 Spotify</h2>
-<iframe style="border-radius:12px"
-src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-width="100%" height="152"></iframe>
-</div>
-
-<!-- DRIVE -->
-<div class="card big">
-<h2>📁 Drive</h2>
-<button onclick="window.open('https://drive.google.com/drive/folders/1lPVoGQoMKUANKemo4t9W1xjTV8U0jbfL','_blank')">
-Open Drive
-</button>
 </div>
 
 </div>
@@ -232,7 +274,7 @@ Open Drive
 <button onclick="toggleTheme()">Light / Dark</button>
 </div>
 
-<!-- NOTIFICATION -->
+<!-- NOTIF -->
 <div id="notif"></div>
 
 <!-- VERSION -->
@@ -242,11 +284,6 @@ Open Drive
 </div>
 
 <script>
-
-/* LOCKDOWN */
-if (Lockdown) {
-  document.getElementById("lockdown").style.display="flex";
-}
 
 /* LOGIN */
 function login(){
@@ -305,7 +342,7 @@ document.addEventListener("mousemove",(e)=>{
   c.style.top=e.clientY+"px";
 });
 
-/* NOTIFICATIONS */
+/* NOTIF */
 function notify(msg){
   const n=document.getElementById("notif");
   n.innerText=msg;
@@ -316,8 +353,7 @@ function notify(msg){
 function startNotifications(){
   setInterval(()=>{
     if(Math.random()>0.5){
-      const msg=quotes[Math.floor(Math.random()*quotes.length)];
-      notify(msg);
+      notify(quotes[Math.floor(Math.random()*quotes.length)]);
     }
   },12000);
 }
