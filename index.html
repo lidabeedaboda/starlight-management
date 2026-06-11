@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Starlight Management</title>
+<title>Starlight Dashboard</title>
 
 <style>
   body {
@@ -10,125 +10,148 @@
     font-family: Arial;
     background: #0b0f1a;
     color: white;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
-  .card {
-    text-align: center;
+  .container {
+    padding: 30px;
+    padding-bottom: 80px;
   }
 
-  input {
-    display: block;
-    margin: 10px auto;
-    padding: 10px;
-    width: 220px;
-    border-radius: 8px;
-    border: none;
-  }
-
-  button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    background: #4c6fff;
-    color: white;
-    cursor: pointer;
-  }
-
-  .error {
-    color: red;
-    margin-top: 10px;
-  }
-
-  .dashboard {
-    display: none;
-    width: 100%;
-    padding: 40px;
-    text-align: center;
+  h1 {
+    margin-bottom: 20px;
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    margin-top: 20px;
   }
 
-  .box {
+  .card {
     background: #151c2f;
     padding: 15px;
     border-radius: 10px;
   }
 
-  .logout {
-    margin-top: 20px;
-    background: red;
+  input, button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+  }
+
+  button {
+    background: #4c6fff;
+    color: white;
+    cursor: pointer;
+  }
+
+  .big {
+    grid-column: span 2;
+  }
+
+  /* VERSION FOOTER */
+  .version {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0a0d16;
+    padding: 10px;
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
   }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div class="card" id="loginPage">
-  <h1>Welcome to Starlight Management</h1>
+<div class="container">
 
-  <input id="user" placeholder="Username">
-  <input id="pass" type="password" placeholder="Password">
-
-  <button onclick="login()">Login</button>
-
-  <div class="error" id="error"></div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-
-  <h1>📊 Starlight Dashboard</h1>
+  <h1>📊 Starlight Management Dashboard</h1>
 
   <div class="grid">
-    <div class="box">🛫 Flight Systems: Online</div>
-    <div class="box">👥 Active Users: 3</div>
-    <div class="box">📡 Server Status: Stable</div>
-    <div class="box">🔒 Security: Enabled</div>
-    <div class="box">📁 Logs: No issues</div>
-    <div class="box">⚙️ Admin Panel: Active</div>
+
+    <!-- COUNTDOWN -->
+    <div class="card big">
+      <h2>⏳ Countdown Timer</h2>
+
+      <input id="dateInput" type="datetime-local">
+      <button onclick="startCountdown()">Start Countdown</button>
+
+      <h3 id="countdown">No timer set</h3>
+    </div>
+
+    <!-- CLOCK -->
+    <div class="card">
+      <h2>🕒 Current Time</h2>
+      <h3 id="time"></h3>
+    </div>
+
+    <!-- STATUS -->
+    <div class="card">
+      <h2>📡 System Status</h2>
+      <p>Server: Stable</p>
+      <p>Users: Online</p>
+      <p>Security: Active</p>
+    </div>
+
+    <!-- SPOTIFY -->
+    <div class="card big">
+      <h2>🎵 Spotify Player</h2>
+
+      <iframe style="border-radius:12px"
+        src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
+        width="100%" height="152"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+      </iframe>
+
+    </div>
+
   </div>
 
-  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<!-- VERSION BAR -->
+<div class="version">
+  <div>Starlight Management System</div>
+  <div>v1.0.0 • build 001 • stable</div>
 </div>
 
 <script>
-  // REAL USER DATABASE (client-side)
-  const users = {
-    stempchase: "Hmaw4357",
-    vowlesjade: "hunger-game",
-    wrightbec: "swim-time"
-  };
+  // LIVE CLOCK
+  setInterval(() => {
+    document.getElementById("time").innerText =
+      new Date().toLocaleTimeString();
+  }, 1000);
 
-  function login() {
-    const u = document.getElementById("user").value;
-    const p = document.getElementById("pass").value;
-    const error = document.getElementById("error");
+  // COUNTDOWN
+  function startCountdown() {
+    const input = document.getElementById("dateInput").value;
+    const countdownEl = document.getElementById("countdown");
 
-    if (users[u] && users[u] === p) {
-      document.getElementById("loginPage").style.display = "none";
-      document.getElementById("dashboard").style.display = "block";
-      error.innerText = "";
-    } else {
-      error.innerText = "Failed to load, contact the owner.";
-    }
-  }
+    const target = new Date(input).getTime();
 
-  function logout() {
-    document.getElementById("loginPage").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
+    setInterval(() => {
+      const now = new Date().getTime();
+      const diff = target - now;
 
-    document.getElementById("user").value = "";
-    document.getElementById("pass").value = "";
+      if (diff <= 0) {
+        countdownEl.innerText = "Time reached!";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      countdownEl.innerText =
+        `${days}d ${hours}h ${mins}m ${secs}s`;
+    }, 1000);
   }
 </script>
 
