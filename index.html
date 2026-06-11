@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- ⭐ FAVICON FIXED -->
-<link rel="icon" type="image/png" sizes="32x32"
+<!-- ⭐ FAVICON -->
+<link rel="icon" type="image/png"
 href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png">
 
 <title>Starlight Management</title>
@@ -16,32 +16,41 @@ body {
   margin: 0;
   font-family: 'Fredoka One', cursive;
   cursor: none;
-  transition: 0.3s;
   overflow-x: hidden;
 }
 
-/* 🌙 THEMES */
+/* 🌌 STAR CANVAS */
+#stars {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+}
+
+/* 🌙 BACKGROUNDS */
 body.dark {
   background: radial-gradient(circle at top, #0b0f1a, #05070d);
   color: white;
 }
+
 body.light {
   background: radial-gradient(circle at top, #f4f6ff, #e9ecff);
   color: #111;
 }
 
-/* ✨ GLASS EFFECT */
+/* 🧊 GLASS UI */
 .card, .loginBox, #settings {
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+  border-radius: 18px;
+  transition: 0.25s;
 }
 
 body.dark .card,
 body.dark .loginBox,
 body.dark #settings {
-  background: rgba(21, 28, 47, 0.6);
+  background: rgba(21, 28, 47, 0.55);
 }
 
 body.light .card,
@@ -50,40 +59,34 @@ body.light #settings {
   background: rgba(255, 255, 255, 0.6);
 }
 
-/* CONTAINER */
+/* LAYOUT */
 .container {
   padding: 30px;
-  padding-bottom: 100px;
+  padding-bottom: 90px;
 }
 
-/* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
 }
 
-/* CARDS */
+/* CARD */
 .card {
   padding: 15px;
-  border-radius: 16px;
-  transition: 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
 }
 
-/* INPUTS */
-input, button {
+/* BUTTONS */
+button {
   padding: 10px;
   border-radius: 10px;
   border: none;
   margin-top: 10px;
-  font-family: 'Fredoka One', cursive;
-}
-
-button {
+  font-family: inherit;
   background: linear-gradient(135deg, #4c6fff, #6a8dff);
   color: white;
   cursor: pointer;
@@ -91,11 +94,17 @@ button {
 }
 
 button:hover {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
-/* BIG CARDS */
-.big { grid-column: span 2; }
+/* INPUT */
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  font-family: inherit;
+}
 
 /* LOGIN */
 #login {
@@ -112,7 +121,6 @@ button:hover {
   top: 80px;
   display: none;
   padding: 15px;
-  border-radius: 12px;
   z-index: 999;
 }
 
@@ -127,7 +135,7 @@ button:hover {
   transform: translate(-50%, -50%);
   z-index: 9999;
 }
-body.light .cursor { border-color: #111; }
+body.light .cursor { border-color:#111; }
 
 /* VERSION */
 .version {
@@ -146,38 +154,51 @@ body.light .cursor { border-color: #111; }
   position: fixed;
   bottom: 60px;
   right: 20px;
-  background: rgba(21,28,47,0.9);
   padding: 12px;
   border-radius: 10px;
   display: none;
   max-width: 220px;
+  backdrop-filter: blur(12px);
+  background: rgba(20,20,30,0.7);
 }
 
-/* 🔗 QUICK LINKS */
-.linkBtn {
+/* 🔗 QUICK LINKS SMALL */
+.quickLinks a {
   display: block;
+  font-size: 12px;
+  padding: 6px 8px;
+  margin-top: 6px;
+  border-radius: 8px;
   text-decoration: none;
-  margin-top: 8px;
-  padding: 10px;
-  border-radius: 10px;
-  background: rgba(76,110,255,0.2);
+  background: rgba(76,110,255,0.15);
   color: inherit;
   transition: 0.2s;
 }
 
-.linkBtn:hover {
-  background: rgba(76,110,255,0.4);
-  transform: translateX(3px);
+.quickLinks a:hover {
+  background: rgba(76,110,255,0.3);
+  transform: translateX(2px);
 }
+
+/* 🧊 SPLIT LAYOUT */
+.split {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+}
+
+/* BIG */
+.big { grid-column: span 2; }
 
 </style>
 </head>
 
 <body class="dark">
 
-<script>
-const Lockdown = false;
+<!-- 🌌 STARS -->
+<canvas id="stars"></canvas>
 
+<script>
 const users = {
   stempchase:"Hmaw4357",
   vowlesjade:"hunger-game",
@@ -193,17 +214,15 @@ const quotes = [
   "🔥 Stay strong",
   "💫 You matter",
   "🚀 Keep pushing forward",
-  "🌻 Today is a new chance",
-  "💎 Shine in your own way"
+  "🌻 Today is a new chance"
 ];
 </script>
 
-<!-- CURSOR -->
 <div class="cursor" id="cursor"></div>
 
 <!-- LOGIN -->
 <div id="login">
-  <div class="loginBox">
+  <div class="loginBox" style="padding:30px;text-align:center;">
     <h2>Starlight Login</h2>
     <input id="user" placeholder="Username">
     <input id="pass" type="password" placeholder="Password">
@@ -221,37 +240,26 @@ const quotes = [
 
 <button onclick="toggleSettings()">⚙️ Settings</button>
 
-<div class="grid">
+<!-- SPLIT: COUNTDOWN + QUICK LINKS -->
+<div class="split">
 
-<div class="card big">
-<h2>📌 Notice Board</h2>
-<p>hii all! there are no exams for the rest of the term woo!</p>
-</div>
-
-<!-- 🔗 QUICK LINKS -->
-<div class="card big">
-<h2>🔗 Quick Links</h2>
-
-<a class="linkBtn" href="https://portal.inaburra.school/auth/portal" target="_blank">
-School Portal
-</a>
-
-<a class="linkBtn" href="https://spotify.com" target="_blank">
-Spotify
-</a>
-
-<a class="linkBtn" href="https://mail.google.com" target="_blank">
-Mail
-</a>
-
-</div>
-
-<div class="card big">
+<div class="card">
 <h2>⏳ Countdown</h2>
 <input id="dateInput" type="datetime-local">
 <button onclick="startCountdown()">Start</button>
 <h3 id="countdown">No timer</h3>
 </div>
+
+<div class="card quickLinks">
+<h3>🔗 Quick Links</h3>
+<a href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
+<a href="https://spotify.com" target="_blank">Spotify</a>
+<a href="https://mail.google.com" target="_blank">Mail</a>
+</div>
+
+</div>
+
+<div class="grid">
 
 <div class="card">
 <h2>🕒 Time</h2>
@@ -264,9 +272,13 @@ Mail
 <p>Security: Active</p>
 </div>
 
-</div>
+<div class="card big">
+<h2>📌 Notice Board</h2>
+<p>hii all! there are no exams for the rest of the term woo!</p>
 </div>
 
+</div>
+</div>
 </div>
 
 <!-- SETTINGS -->
@@ -295,13 +307,14 @@ function login(){
     document.getElementById("app").style.display="block";
     startNotifications();
   } else {
-    document.getElementById("error").innerText="Failed to load, contact the owner.";
+    document.getElementById("error").innerText="Invalid login";
   }
 }
 
 /* CLOCK */
 setInterval(()=>{
-  document.getElementById("time").innerText=new Date().toLocaleTimeString();
+  document.getElementById("time").innerText =
+  new Date().toLocaleTimeString();
 },1000);
 
 /* COUNTDOWN */
@@ -309,8 +322,7 @@ function startCountdown(){
   const t=new Date(document.getElementById("dateInput").value).getTime();
 
   setInterval(()=>{
-    const now=Date.now();
-    const d=t-now;
+    const d=t-Date.now();
     if(d<=0)return;
 
     const dd=Math.floor(d/86400000);
@@ -352,7 +364,7 @@ function notify(msg){
 
 function startNotifications(){
   setInterval(()=>{
-    if(Math.random()>0.5){
+    if(Math.random()>0.6){
       notify(quotes[Math.floor(Math.random()*quotes.length)]);
     }
   },12000);
@@ -360,7 +372,56 @@ function startNotifications(){
 
 /* VERSION */
 document.getElementById("ver").innerText=
-`v${version.toFixed(1)}.0 • build ${Math.floor(Math.random()*900+100)}`;
+`v${version.toFixed(1)} • build ${Math.floor(Math.random()*900+100)}`;
+
+/* 🌌 STAR BACKGROUND */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+let stars=[];
+let w,h;
+
+function resize(){
+  w=canvas.width=window.innerWidth;
+  h=canvas.height=window.innerHeight;
+}
+
+window.addEventListener("resize",resize);
+resize();
+
+function init(){
+  for(let i=0;i<120;i++){
+    stars.push({
+      x:Math.random()*w,
+      y:Math.random()*h,
+      r:Math.random()*1.5,
+      s:Math.random()*0.4+0.1,
+      a:Math.random()
+    });
+  }
+}
+
+function draw(){
+  ctx.clearRect(0,0,w,h);
+
+  for(let s of stars){
+    ctx.fillStyle=`rgba(255,255,255,${s.a})`;
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+
+    s.y+=s.s;
+    if(s.y>h){
+      s.y=0;
+      s.x=Math.random()*w;
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+
+init();
+draw();
 
 </script>
 
