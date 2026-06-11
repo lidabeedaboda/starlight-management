@@ -1,55 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Starlight Management</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #0f0f1a;
-      font-family: Arial, sans-serif;
-      color: white;
-    }
+"use client";
 
-    .container {
-      text-align: center;
-    }
+import { useState } from "react";
 
-    h1 {
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
+export default function Page() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [error, setError] = useState("");
 
-    button {
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #4c6fff;
-      color: white;
-      transition: 0.2s;
-    }
+  const users = {
+    stempchase: "Hmaw4357",
+    vowlesjade: "hunger-game",
+    wrightbec: "swim-time",
+  };
 
-    button:hover {
-      background: #3a56d6;
+  function login() {
+    // @ts-ignore
+    if (users[username] && users[username] === password) {
+      setLoggedIn(true);
+      setError("");
+    } else {
+      setError("Failed to load, contact the owner.");
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Welcome to Starlight Management by Chase!</h1>
-    <button onclick="login()">Login</button>
-  </div>
+  }
 
-  <script>
-    function login() {
-      alert("Failed to load, contact the owner.");
-    }
-  </script>
-</body>
-</html>
+  if (loggedIn) {
+    return (
+      <div style={styles.dashboard}>
+        <h1>📊 Starlight Dashboard</h1>
+
+        <div style={styles.grid}>
+          <div style={styles.card}>🛫 Flights Status: All systems operational</div>
+          <div style={styles.card}>👥 Users Online: 3</div>
+          <div style={styles.card}>📡 Server: Stable</div>
+          <div style={styles.card}>⚙️ Admin Tools: Enabled</div>
+          <div style={styles.card}>📁 Logs: No errors detected</div>
+          <div style={styles.card}>🔒 Security: Active monitoring</div>
+        </div>
+
+        <button style={styles.logout} onClick={() => setLoggedIn(false)}>
+          Logout
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={styles.container}>
+      <h1>✨ Welcome to Starlight Management</h1>
+
+      <input
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        style={styles.input}
+      />
+
+      <input
+        placeholder="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        style={styles.input}
+      />
+
+      <button onClick={login} style={styles.button}>
+        Login
+      </button>
+
+      {error && <p style={styles.error}>{error}</p>}
+    </div>
+  );
+}
+
+const styles: any = {
+  container: {
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "#0b0f1a",
+    color: "white",
+    gap: "10px",
+  },
+  input: {
+    padding: "10px",
+    width: "220px",
+    borderRadius: "8px",
+    border: "none",
+  },
+  button: {
+    padding: "10px 20px",
+    borderRadius: "8px",
+    border: "none",
+    background: "#4c6fff",
+    color: "white",
+    cursor: "pointer",
+  },
+  error: {
+    color: "red",
+  },
+  dashboard: {
+    padding: "30px",
+    background: "#0b0f1a",
+    color: "white",
+    minHeight: "100vh",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: "15px",
+    marginTop: "20px",
+  },
+  card: {
+    background: "#151c2f",
+    padding: "15px",
+    borderRadius: "10px",
+  },
+  logout: {
+    marginTop: "20px",
+    padding: "10px 20px",
+    borderRadius: "8px",
+    border: "none",
+    background: "red",
+    color: "white",
+    cursor: "pointer",
+  },
+};
