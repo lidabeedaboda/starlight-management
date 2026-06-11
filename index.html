@@ -4,14 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Starlight Management</title>
-<link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Star_icon_stylized.png?v=4">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-a<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Starlight Management</title>
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⭐</text></svg>">
 
@@ -404,6 +396,10 @@ input:focus, select:focus {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-gradient);
 }
 
 .loginBox {
@@ -412,12 +408,18 @@ input:focus, select:focus {
   max-width: 380px;
   text-align: center;
 }
-.loginBox input, .loginBox select { width: 100%; margin-bottom: 14px; }
+.loginBox input { width: 100%; margin-bottom: 14px; }
 .loginBox button { width: 100%; margin-top: 10px; }
 #error { font-size: 13px; margin: 12px 0 0 0; min-height: 18px; }
 
 .timer-controls { display: flex; gap: 8px; margin: 12px 0; }
 .timer-controls button { flex: 1; }
+
+.topbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -440,18 +442,8 @@ input:focus, select:focus {
 <div id="login">
   <div class="glass-panel loginBox">
     <h2 style="justify-content: center; font-size: 22px;">⭐ Starlight Gateway</h2>
-    
     <input id="user" placeholder="Username" spellcheck="false" autocomplete="off">
     <input id="pass" type="password" placeholder="Password">
-    
-    <select id="loginSignet" style="margin-bottom: 14px;">
-      <option value="None">Select Signet Option</option>
-      <option value="👑 Monarch Crest">👑 Monarch Crest</option>
-      <option value="🛡️ Vanguard Vanguard">🛡️ Vanguard Shield</option>
-      <option value="🦅 Astral Falcon">🦅 Astral Falcon</option>
-      <option value="🔮 Mystic Rune">🔮 Mystic Rune</option>
-    </select>
-
     <button onclick="login()">Access Station</button>
     <p id="error" style="color:#ff4a74;"></p>
   </div>
@@ -463,12 +455,16 @@ input:focus, select:focus {
     <div id="topbar" class="glass-panel">
       <h1 id="greeting">Starlight Management</h1>
       
-      <select id="themeSelector" onchange="changeTheme()" style="padding: 8px 14px; font-size: 13px; border-radius: 12px; height: auto;">
-        <option value="dark">🌌 Dark Mode</option>
-        <option value="light">🍦 Light Mode</option>
-        <option value="blue">💙 Cyber Blue</option>
-        <option value="pink">🌸 Neon Pink</option>
-      </select>
+      <div class="topbar-actions">
+        <select id="themeSelector" onchange="changeTheme()" style="padding: 8px 14px; font-size: 13px; border-radius: 12px; height: auto;">
+          <option value="dark">🌌 Dark Mode</option>
+          <option value="light">🍦 Light Mode</option>
+          <option value="blue">💙 Cyber Blue</option>
+          <option value="pink">🌸 Neon Pink</option>
+        </select>
+        
+        <button onclick="signout()" style="padding: 8px 16px; font-size: 13px; background: rgba(255,255,255,0.08); color: var(--text-primary); box-shadow: none; border: 1px solid var(--glass-border);">Sign Out</button>
+      </div>
     </div>
 
     <div class="card glass-panel wide">
@@ -480,7 +476,6 @@ input:focus, select:focus {
       <h2>🕒 System Time</h2>
       <h3 id="time">00:00:00</h3>
       <div id="dateDisplay" style="font-family:'Outfit', sans-serif; font-size:14px; color:var(--text-secondary); margin-top:10px;"></div>
-      <div id="signetBadge" style="margin-top: 12px; font-size: 13px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; width: fit-content; display: none;"></div>
     </div>
 
     <div class="card glass-panel">
@@ -551,7 +546,7 @@ input:focus, select:focus {
 </div>
 
 <script>
-// Extended User Matrix Databases Map
+// Secured Access Directory
 const users = {
   stempchase: "Hmaw4357",
   vowlesjade: "hunger-game",
@@ -574,11 +569,10 @@ function isCurfew(){
   return (minutes >= start || minutes < end);
 }
 
-/* AUTHENTICATION GATEWAY CONTROL PIPELINE */
+/* AUTHENTICATION GATEWAY PIPELINE */
 function login(){
   const u = document.getElementById("user").value.trim().toLowerCase();
   const p = document.getElementById("pass").value.trim();
-  const signet = document.getElementById("loginSignet").value;
 
   if(users[u] && users[u] === p){
     if(isCurfew()){
@@ -587,29 +581,25 @@ function login(){
       return;
     }
 
-    document.getElementById("login").style.display = "none";
+    // Completely hide login mask layer from stack flow entirely
+    document.getElementById("login").style.setProperty("display", "none", "important");
     document.getElementById("app").style.display = "block";
 
     setGreeting(u);
     loadEvents();
     startClock();
     loadTodos();
-    setupSignetBadge(signet);
     attachCursorListeners();
   } else {
     document.getElementById("error").innerText = "Clearance rejected. Invalid inputs.";
   }
 }
 
-/* SET SIGNET BADGE COMPONENT */
-function setupSignetBadge(signet) {
-  const badge = document.getElementById("signetBadge");
-  if(signet !== "None") {
-    badge.innerText = "Active Signet: " + signet;
-    badge.style.display = "block";
-  } else {
-    badge.style.display = "none";
-  }
+/* TERMINATION EXIT PROCESS (SIGN OUT) */
+function signout() {
+  document.getElementById("app").style.display = "none";
+  document.getElementById("pass").value = ""; // Flush security buffer
+  document.getElementById("login").style.setProperty("display", "flex", "important");
 }
 
 /* PERSONALIZED HEADER COMPILER */
@@ -628,6 +618,9 @@ function startClock(){
   const clockEl = document.getElementById("time");
   const dateEl = document.getElementById("dateDisplay");
   
+  if(window.clockIntervalSetup) return; // Prevent double intervals
+  window.clockIntervalSetup = true;
+
   setInterval(() => {
     const now = new Date();
     clockEl.innerText = now.toLocaleTimeString();
@@ -673,7 +666,7 @@ function changeTheme(){
   const selector = document.getElementById("themeSelector");
   const selectedTheme = selector.value;
   
-  document.body.className = ""; // Wipe active configurations
+  document.body.className = ""; // Wipe active variations
   if (selectedTheme !== "dark") {
     document.body.classList.add(selectedTheme);
   }
@@ -754,7 +747,7 @@ function renderTodos() {
   `).join("");
 }
 
-/* PRECISION INTERVAL SYSTEM STOPWATCH ENGINE */
+/* PRECISION STOPWATCH ENGINE */
 let stopwatchInterval = null;
 let stopwatchTime = 0;
 function toggleStopwatch() {
@@ -829,801 +822,6 @@ function draw(){
   ctx.clearRect(0, 0, w, h);
   for(let s of stars){
     ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--star-color').trim();
-    s.alpha += s.speed;
-    if(s.alpha > 1 || s.alpha < 0.1) s.speed = -s.speed;
-    
-    ctx.globalAlpha = Math.abs(s.alpha);
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  requestAnimationFrame(draw);
-}
-draw();
-</script>
-
-</body>
-</html>
-<style>
-:root {
-  --bg-gradient: radial-gradient(circle at top, #0b0f19, #04060b);
-  --glass-bg: rgba(15, 22, 42, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glow-color: rgba(99, 102, 241, 0.25);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --accent: linear-gradient(135deg, #6366f1, #a855f7);
-  --accent-hover: linear-gradient(135deg, #4f46e5, #9333ea);
-  --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-}
-
-.light {
-  --bg-gradient: radial-gradient(circle at top, #f8fafc, #e2e8f0);
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glow-color: rgba(99, 102, 241, 0.15);
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --card-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
-}
-
-* {
-  box-sizing: border-box;
-  user-select: none;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Fredoka One', cursive;
-  background: var(--bg-gradient);
-  color: var(--text-primary);
-  min-height: 100vh;
-  cursor: none;
-  overflow-x: hidden;
-  transition: background 0.5s ease, color 0.3s ease;
-}
-
-#stars {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* 🧊 GLASSMORPHISM CARDS */
-.glass-panel {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius: 24px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--card-shadow);
-  background: var(--glass-bg);
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.glass-panel:hover {
-  border-color: rgba(168, 85, 247, 0.4);
-  box-shadow: var(--card-shadow), 0 0 30px var(--glow-color);
-}
-
-/* 📊 GRID POSITIONING */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 20px;
-}
-
-#topbar {
-  grid-column: span 12;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#topbar h1 {
-  font-size: 26px;
-  margin: 0;
-  background: var(--accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 0.5px;
-}
-
-.card {
-  grid-column: span 4;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-}
-
-.card.wide { grid-column: span 6; }
-.card.two-thirds { grid-column: span 8; }
-.card.full { grid-column: span 12; }
-
-@media (max-width: 1024px) {
-  .card.wide, .card.two-thirds { grid-column: span 12; }
-}
-@media (max-width: 768px) {
-  .card { grid-column: span 12; }
-}
-
-h2 {
-  font-size: 16px;
-  letter-spacing: 1px;
-  color: var(--text-secondary);
-  margin: 0 0 16px 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-h3 {
-  font-size: 32px;
-  margin: auto 0;
-}
-
-/* 🕹️ CONTROLS */
-button {
-  padding: 12px 24px;
-  border-radius: 16px;
-  border: none;
-  font-family: 'Fredoka One', cursive;
-  font-size: 13px;
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 4px 15px var(--glow-color);
-  transition: all 0.2s ease;
-}
-
-button:hover {
-  background: var(--accent-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--glow-color);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-input, select {
-  padding: 14px;
-  border-radius: 16px;
-  border: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.2);
-  color: var(--text-primary);
-  font-family: 'Fredoka One', cursive;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-.light input, .light select {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-input:focus, select:focus {
-  border-color: #a855f7;
-  box-shadow: 0 0 0 3px var(--glow-color);
-}
-
-/* 🗓️ CALENDAR ITINERARY */
-.event-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  overflow-y: auto;
-  max-height: 250px;
-  padding-right: 6px;
-}
-
-.event-timeline::-webkit-scrollbar {
-  width: 6px;
-}
-.event-timeline::-webkit-scrollbar-thumb {
-  background: var(--glass-border);
-  border-radius: 10px;
-}
-
-.timeline-item {
-  padding: 14px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--glass-border);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.timeline-item.active {
-  border-left: 4px solid #a855f7;
-  background: rgba(168, 85, 247, 0.06);
-}
-
-.timeline-day {
-  font-size: 11px;
-  color: #a855f7;
-  letter-spacing: 0.5px;
-}
-
-.timeline-desc {
-  font-size: 15px;
-}
-
-.timeline-meta {
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-/* 🔗 LINKS GRID */
-.link-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 10px;
-  margin-top: auto;
-}
-
-.link-card {
-  padding: 14px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--glass-border);
-  color: var(--text-primary);
-  text-decoration: none;
-  font-size: 14px;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-.link-card:hover {
-  background: var(--accent);
-  color: white !important;
-  border-color: transparent;
-}
-
-/* 🎵 SPOTIFY EMBED */
-.spotify-container {
-  border-radius: 18px;
-  overflow: hidden;
-  margin-top: auto;
-  height: 80px;
-}
-
-/* 🌤️ WEATHER WIDGET */
-.weather-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 12px;
-}
-.weather-temp {
-  font-size: 38px;
-}
-.weather-desc {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-.weather-details {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid var(--glass-border);
-  padding-top: 10px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-/* 📋 QUICK TASKS WIDGET */
-.todo-input-container {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.todo-input-container input {
-  flex: 1;
-  padding: 10px;
-}
-.todo-input-container button {
-  padding: 10px 16px;
-}
-.todo-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 120px;
-  overflow-y: auto;
-}
-.todo-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  margin-bottom: 6px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-}
-.todo-item span {
-  cursor: pointer;
-}
-.todo-item.completed span {
-  text-decoration: line-through;
-  color: var(--text-secondary);
-}
-.todo-delete {
-  background: none;
-  border: none;
-  color: #ff4a74;
-  cursor: pointer;
-  box-shadow: none;
-  padding: 0;
-}
-.todo-delete:hover {
-  background: none;
-  transform: none;
-  box-shadow: none;
-  color: #ff1a4a;
-}
-
-/* ⏱️ STOPWATCH */
-.stopwatch-display {
-  font-size: 32px;
-  text-align: center;
-  margin: 10px 0;
-}
-.stopwatch-controls {
-  display: flex;
-  gap: 8px;
-}
-.stopwatch-controls button {
-  flex: 1;
-  padding: 8px;
-}
-
-/* 🎯 INTERACTIVE CURSOR */
-.cursor-ring {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #a855f7;
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 99999;
-  transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
-}
-
-.cursor-hover {
-  width: 40px;
-  height: 40px;
-  background: rgba(168, 85, 247, 0.15);
-  border-color: #6366f1;
-}
-
-@media (pointer: coarse) {
-  .cursor-ring { display: none; }
-  body { cursor: auto; }
-}
-
-/* 🔒 CURFEW LOCK */
-#curfew {
-  position: fixed;
-  inset: 0;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100000;
-  background: radial-gradient(circle at center, #130f26, #05030a);
-}
-
-#curfew h1 { font-size: 80px; margin: 0; animation: float 3s ease-in-out infinite; }
-#curfew p { font-size: 20px; color: #b4b6f4; max-width: 440px; line-height: 1.6; }
-
-/* 🔐 LOGIN ENTRY */
-#login {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.loginBox {
-  padding: 40px;
-  width: 100%;
-  max-width: 380px;
-  text-align: center;
-}
-
-.loginBox h2 { justify-content: center; font-size: 18px; }
-.loginBox input { width: 100%; margin-bottom: 14px; }
-.loginBox button { width: 100%; margin-top: 10px; }
-#error { font-size: 13px; margin: 12px 0 0 0; min-height: 18px; }
-
-.timer-controls { display: flex; gap: 8px; margin: 12px 0; }
-.timer-controls button { flex: 1; }
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-</style>
-</head>
-
-<body class="dark">
-
-<canvas id="stars"></canvas>
-<div class="cursor-ring" id="cursor"></div>
-
-<div id="curfew">
-  <h1>🔒</h1>
-  <h2 style="color: #fff; font-size: 26px;">Curfew Locked</h2>
-  <p>System operations locked down for the night. Access restores automatically at 8:24 AM.</p>
-</div>
-
-<div id="login">
-  <div class="glass-panel loginBox">
-    <h2>⭐ Starlight Gateway</h2>
-    <input id="user" placeholder="Username" spellcheck="false" autocomplete="off">
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">Access Station</button>
-    <p id="error" style="color:#ff4a74;"></p>
-  </div>
-</div>
-
-<div id="app" style="display:none">
-  <div class="container">
-    
-    <div id="topbar" class="glass-panel">
-      <h1 id="greeting">Starlight Management</h1>
-      <button onclick="toggleTheme()" style="padding: 8px 18px; font-size: 13px;">Theme Mode</button>
-    </div>
-
-    <div class="card glass-panel wide">
-      <h2>🗓️ Weekly Calendar</h2>
-      <div class="event-timeline" id="events"></div>
-    </div>
-
-    <div class="card glass-panel">
-      <h2>🕒 System Time</h2>
-      <h3 id="time">00:00:00</h3>
-      <div id="dateDisplay" style="font-family:'Outfit', sans-serif; font-size:14px; color:var(--text-secondary); margin-top:10px;"></div>
-    </div>
-
-    <div class="card glass-panel">
-      <h2>🌤️ Weather Node</h2>
-      <div class="weather-info">
-        <div class="weather-temp" id="weatherTemp">18°C</div>
-        <div class="weather-desc">Clear Skies<br><span style="font-weight:600;">Bangor, AU</span></div>
-      </div>
-      <div class="weather-details">
-        <span>💧 Humidity: 62%</span>
-        <span>💨 Wind: 11 km/h</span>
-      </div>
-    </div>
-
-    <div class="card glass-panel wide">
-      <h2>🎵 Ambient Player</h2>
-      <div class="spotify-container">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1GXAM96gZ3v06N?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-    </div>
-
-    <div class="card glass-panel">
-      <h2>📋 Quick Tasks</h2>
-      <div class="todo-input-container">
-        <input id="todoInput" placeholder="Add custom task..." autocomplete="off">
-        <button onclick="addTodo()">+</button>
-      </div>
-      <ul class="todo-list" id="todoList"></ul>
-    </div>
-
-    <div class="card glass-panel">
-      <h2>⏱️ Precision Stopwatch</h2>
-      <div class="stopwatch-display" id="stopwatchDisplay">00:00.0</div>
-      <div class="stopwatch-controls">
-        <button onclick="toggleStopwatch()" id="stopwatchBtn">Start</button>
-        <button onclick="resetStopwatch()" style="background:rgba(255,255,255,0.08); color:var(--text-primary); box-shadow:none;">Reset</button>
-      </div>
-    </div>
-
-    <div class="card glass-panel wide">
-      <h2>⏳ Milestone Countdown</h2>
-      <input id="dateInput" type="datetime-local" style="width: 100%;">
-      <div class="timer-controls">
-        <button onclick="startTimer()">Start</button>
-        <button onclick="stopTimer()" style="background: rgba(255,255,255,0.08); color: var(--text-primary); box-shadow: none;">Stop</button>
-      </div>
-      <h3 id="countdown" style="font-size: 20px; font-weight: 500; text-align: center;">No countdown running</h3>
-    </div>
-
-    <div class="card glass-panel">
-      <h2>📁 Cloud Repositories</h2>
-      <p style="color: var(--text-secondary); font-family: 'Outfit', sans-serif; font-size: 14px; margin-top: 0; line-height: 1.4;">Access unified documents, file nodes, and share networks.</p>
-      <button onclick="window.open('https://drive.google.com','_blank')" style="margin-top: auto; width: 100%;">
-        Open Google Drive
-      </button>
-    </div>
-
-    <div class="card glass-panel full">
-      <h2>🔗 Node Navigation Links</h2>
-      <div class="link-grid" style="grid-template-columns: repeat(3, 1fr);">
-        <a class="link-card" href="https://portal.inaburra.school/auth/portal" target="_blank">School Portal</a>
-        <a class="link-card" href="https://open.spotify.com" target="_blank">Web Spotify Player</a>
-        <a class="link-card" href="https://mail.google.com" target="_blank">Google Mail Terminal</a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-const users = {
-  stempchase: "Hmaw4357",
-  vowlesjade: "hunger-game",
-  wrightbec: "swim-time"
-};
-
-let currentTimer = null;
-
-/* CURFEW RULES ENGINE: 9:53PM - 8:24AM */
-function isCurfew(){
-  const h = new Date().getHours();
-  const m = new Date().getMinutes();
-  const minutes = h * 60 + m;
-
-  const start = 21 * 60 + 53; 
-  const end = 8 * 60 + 24;    
-
-  return (minutes >= start || minutes < end);
-}
-
-/* APPLICATION ENTRY ACCESS PORT */
-function login(){
-  const u = document.getElementById("user").value.trim();
-  const p = document.getElementById("pass").value.trim();
-
-  if(users[u] && users[u] === p){
-    if(isCurfew()){
-      document.getElementById("login").style.display = "none";
-      document.getElementById("curfew").style.display = "flex";
-      return;
-    }
-
-    document.getElementById("login").style.display = "none";
-    document.getElementById("app").style.display = "block";
-
-    setGreeting();
-    loadEvents();
-    startClock();
-    loadTodos();
-    attachCursorListeners();
-  } else {
-    document.getElementById("error").innerText = "Clearance rejected. Invalid inputs.";
-  }
-}
-
-/* PERSONALIZED HEADER COMPILER */
-function setGreeting(){
-  const h = new Date().getHours();
-  let g = "Good Evening";
-  if(h < 12) g = "Good Morning";
-  else if(h < 18) g = "Good Afternoon";
-
-  const rawUser = document.getElementById("user").value;
-  const beautifulUser = rawUser.charAt(0).toUpperCase() + rawUser.slice(1);
-
-  document.getElementById("greeting").innerText = `${g}, ${beautifulUser}`;
-}
-
-/* REALTIME SYSTEM CLOCK AND CALENDAR MATRICES */
-function startClock(){
-  const clockEl = document.getElementById("time");
-  const dateEl = document.getElementById("dateDisplay");
-  
-  setInterval(() => {
-    const now = new Date();
-    clockEl.innerText = now.toLocaleTimeString();
-    dateEl.innerText = now.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  }, 1000);
-}
-
-/* COMPREHENSIVE WEEKLY CALENDAR MATRIX */
-const schedule = [
-  { day: "Monday", event: "Sport Uniform Required", note: "Bring gym gear" },
-  { day: "Tuesday", event: "Sport Uniform Required", note: "Outdoor tracks open" },
-  { day: "Wednesday", event: "School Assembly Session", note: "Main hall meeting" },
-  { day: "Thursday", event: "No Events Scheduled", note: "Self-guided study window" },
-  { day: "Friday", event: "Twilight Event (12th June)", note: "Check assignments beforehand" },
-  { day: "Saturday", event: "No Events Scheduled", note: "Weekend cycle standby" },
-  { day: "Sunday", event: "No Events Scheduled", note: "Weekly prep cycle" }
-];
-
-function loadEvents(){
-  const currentDayStr = new Date().toLocaleDateString("en-US", { weekday: "long" });
-  const box = document.getElementById("events");
-
-  const todayIdx = schedule.findIndex(item => item.day === currentDayStr);
-  const orderedSchedule = [
-    ...schedule.slice(todayIdx >= 0 ? todayIdx : 0),
-    ...schedule.slice(0, todayIdx >= 0 ? todayIdx : 0)
-  ];
-
-  box.innerHTML = orderedSchedule.map(item => {
-    const isToday = item.day === currentDayStr;
-    return `
-      <div class="timeline-item ${isToday ? 'active' : ''}">
-        <span class="timeline-day">${item.day} ${isToday ? '• CURRENT TODAY' : '• COMING UP NEXT'}</span>
-        <span class="timeline-desc">${item.event}</span>
-        <span class="timeline-meta">${item.note}</span>
-      </div>
-    `;
-  }).join("");
-}
-
-/* FIXED AND CORRECTED INTERVAL COUNTDOWN ENGINE */
-function startTimer(){
-  const targetVal = document.getElementById("dateInput").value;
-  if(!targetVal) {
-    document.getElementById("countdown").innerText = "Please select a valid date/time";
-    return;
-  }
-  
-  const targetTime = new Date(targetVal).getTime();
-  stopTimer(); // Ensure any running instances clear cleanly
-
-  function updateTimer() {
-    const diff = targetTime - Date.now();
-    if(diff <= 0){
-      document.getElementById("countdown").innerText = "Milestone Reached! ✓";
-      clearInterval(currentTimer);
-      return;
-    }
-
-    const days = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    const secs = Math.floor((diff % 60000) / 1000);
-
-    document.getElementById("countdown").innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
-  }
-
-  updateTimer(); // Initial immediate fire to replace static text instantly
-  currentTimer = setInterval(updateTimer, 1000);
-}
-
-function stopTimer(){
-  if(currentTimer){
-    clearInterval(currentTimer);
-    currentTimer = null;
-  }
-  document.getElementById("countdown").innerText = "Countdown Stopped";
-}
-
-/* QUICK TASKS ACTIONS ENGINE */
-let todos = [];
-function loadTodos() {
-  const saved = localStorage.getItem("starlight_tasks");
-  if(saved) todos = JSON.parse(saved);
-  renderTodos();
-}
-function addTodo() {
-  const input = document.getElementById("todoInput");
-  if(!input.value.trim()) return;
-  todos.push({ text: input.value.trim(), completed: false });
-  input.value = "";
-  saveAndRenderTodos();
-}
-function toggleTodo(index) {
-  todos[index].completed = !todos[index].completed;
-  saveAndRenderTodos();
-}
-function deleteTodo(index) {
-  todos.splice(index, 1);
-  saveAndRenderTodos();
-}
-function saveAndRenderTodos() {
-  localStorage.setItem("starlight_tasks", JSON.stringify(todos));
-  renderTodos();
-}
-function renderTodos() {
-  const list = document.getElementById("todoList");
-  list.innerHTML = todos.map((todo, idx) => `
-    <li class="todo-item ${todo.completed ? 'completed' : ''}">
-      <span onclick="toggleTodo(${idx})">${todo.text}</span>
-      <button class="todo-delete" onclick="deleteTodo(${idx})">✖</button>
-    </li>
-  `).join("");
-}
-
-/* STOPWATCH SYSTEMS CONTROLLER */
-let stopwatchInterval = null;
-let stopwatchTime = 0;
-function toggleStopwatch() {
-  const btn = document.getElementById("stopwatchBtn");
-  if(stopwatchInterval) {
-    clearInterval(stopwatchInterval);
-    stopwatchInterval = null;
-    btn.innerText = "Start";
-  } else {
-    btn.innerText = "Pause";
-    const startTime = Date.now() - stopwatchTime;
-    stopwatchInterval = setInterval(() => {
-      stopwatchTime = Date.now() - startTime;
-      formatStopwatchDisplay();
-    }, 100);
-  }
-}
-function resetStopwatch() {
-  clearInterval(stopwatchInterval);
-  stopwatchInterval = null;
-  stopwatchTime = 0;
-  document.getElementById("stopwatchBtn").innerText = "Start";
-  document.getElementById("stopwatchDisplay").innerText = "00:00.0";
-}
-function formatStopwatchDisplay() {
-  const totalSeconds = stopwatchTime / 1000;
-  const mins = Math.floor(totalSeconds / 60);
-  const secs = Math.floor(totalSeconds % 60);
-  const tenths = Math.floor((stopwatchTime % 1000) / 100);
-  document.getElementById("stopwatchDisplay").innerText = 
-    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${tenths}`;
-}
-
-/* VISUAL MODE THEME SWITCHER */
-function toggleTheme(){
-  document.body.classList.toggle("light");
-}
-
-/* INTERACTIVE CURSOR MOUSE ENGINE */
-const cursor = document.getElementById("cursor");
-document.addEventListener("mousemove", (e) => {
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-});
-
-function attachCursorListeners() {
-  document.querySelectorAll("button, input, select, a, iframe, .todo-item span").forEach(elem => {
-    elem.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
-    elem.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
-  });
-}
-attachCursorListeners();
-
-/* ENGINE ANIMATED BACKGROUND STAR PARTICLES */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-let w, h, stars = [];
-
-function resize(){
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener("resize", resize);
-
-for(let i = 0; i < 150; i++){
-  stars.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    r: Math.random() * 1.6 + 0.3,
-    alpha: Math.random(),
-    speed: Math.random() * 0.015 + 0.005
-  });
-}
-
-function draw(){
-  ctx.clearRect(0, 0, w, h);
-  for(let s of stars){
-    ctx.fillStyle = document.body.classList.contains("light") ? "#6366f1" : "#ffffff";
     s.alpha += s.speed;
     if(s.alpha > 1 || s.alpha < 0.1) s.speed = -s.speed;
     
